@@ -1,3 +1,10 @@
+@import "@fontsource/saira"; /* Imports the default Saira font */;
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+/* Global font */
+body {
+  font-family: 'Saira', sans-serif;
+}
