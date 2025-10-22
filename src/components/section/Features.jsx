@@ -32,7 +32,7 @@ export default function Featured() {
     <SectionWrapper className="relative w-full max-w-[1440px] h-[540px] mx-auto overflow-hidden bg-white">
       {/* Left content */}
       <div className="absolute left-[100px] top-[100px] w-[245px] z-10">
-        <h2 className="text-[40px] font-semibold leading-[130%] text-[#23262F] mb-6 font-saira">
+        <h2 className="text-[40px] font-semibold leading-[130%] text-[#23262F] mb-6 ">
           New in store now
         </h2>
         <p className="text-[16px] font-normal leading-[170%] tracking-[0.01em] text-[#23262F] mb-[60px]">
@@ -49,8 +49,26 @@ export default function Featured() {
       </div>
 
       {/* Product cards */}
-      
-          
+      <div className="absolute top-[70px] left-[415px] flex gap-[20px] overflow-hidden">
+        {products.map((product) => (
+          <div
+            key={product.id}
+            className="relative w-[265px] h-[400px] rounded-[5px] overflow-hidden flex-shrink-0"
+          >
+            <img
+              src={product.image}
+              alt={product.name}
+              className="w-full h-full object-cover"
+            />
+            {/* Gradient overlay */}
+            <div className="absolute inset-0 bg-gradient-to-b from-transparent to-black/40"></div>
+            {/* Product name */}
+            <p className="absolute bottom-[35px] left-1/2 -translate-x-1/2 text-white text-[28px] font-semibold leading-[160%] tracking-[0.01em]">
+              {product.name}
+            </p>
+          </div>
+        ))}
+      </div>
     </SectionWrapper>
   );
 }
