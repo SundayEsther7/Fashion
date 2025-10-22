@@ -26,30 +26,30 @@ Once the structure and responsiveness are complete, I will **develop my own uniq
 ##  Folder Structure
 
 
-src/
-├── assets/
-│ └── images/
-├── components/
-│ ├── common/
-│ │ ├── Button.jsx
-│ │ ├── Card.jsx
-│ │ └── SectionWrapper.jsx
-│ ├── layout/
-│ │ ├── Header.jsx
-│ │ ├── Footer.jsx
-│ │ └── Navigation.jsx
-│ └── sections/
-│ ├── Hero.jsx
-│ ├── Services.jsx
-│ ├── Featured.jsx
-│ └── [other sections].jsx
-├── App.jsx
-└── main.jsx
+src/<br />
+├── assets/<br />
+│ └── images/<br />
+├── components/<br />
+│ ├── common/<br />
+│ │ ├── Button.jsx<br />
+│ │ ├── Card.jsx<br />
+│ │ └── SectionWrapper.jsx<br />
+│ ├── layout/<br />
+│ │ ├── Header.jsx<br />
+│ │ ├── Footer.jsx<br />
+│ │ └── Navigation.jsx<br />
+│ └── sections/<br />
+│ ├── Hero.jsx<br />
+│ ├── Services.jsx<br />
+│ ├── Featured.jsx<br />
+│ └── [other sections].jsx<br />
+├── App.jsx<br />
+└── main.jsx<br />
 
 
 ---
 
-## 🚀 Installation & Setup
+## Installation & Setup
 1. **Clone the repository**
    ```bash
    git clone https://github.com/7sundayesther/my-project.git
