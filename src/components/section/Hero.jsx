@@ -1,3 +1,6 @@
+// Responsive 🥳🥳🥳
+//Could get better though
+
 import SectionWrapper from "../common/SectionWrapper";
 export default function Hero() {
   return (

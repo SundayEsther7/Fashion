@@ -1,29 +1,33 @@
+// Responsive 🥳🥳🥳
+
+
 import SectionWrapper from "../common/SectionWrapper";
 
 export default function Highlight() {
   return (
-    <SectionWrapper className="relative py-24 px-6 md:px-12">
-      <div className="max-w-[1240px] mx-auto flex flex-col-reverse gap-12 items-center lg:flex-row lg:items-start">
+    <SectionWrapper className="bg-white py-16 md:py-20 lg:py-[96px] px-6 md:px-12">
+      {/* Container: switch from column on mobile to row on large screens */}
+      <div className="max-w-[1440px] mx-auto flex flex-col lg:flex-row items-center lg:items-start gap-12 lg:gap-[120px]">
         
-        {/* Content on the left */}
-        <div className="w-full lg:w-1/2 lg:text-left">
-          <h2 className="text-4xl font-bold text-center md:text-left text-primary mb-6">
-            The best furniture Manufacturer of your Choice
+        {/* LEFT: Text */}
+        <div className="w-full lg:w-[45%] lg:pl-[100px] text-center lg:text-left">
+          <h2 className="font-saira text-[32px] md:text-[40px] font-semibold leading-[130%] text-[#23262F] mb-[40px]">
+            The best furniture manufacturer of your choice
           </h2>
-          <p className="text-lg text-center md:text-left text-secondary mb-6">
-            Furniture Power is a software-as-a-service platform for modern
-            furniture businesses. We provide a blend of aesthetics and
-            practicality, helping you manage every aspect of your furniture
-            collection effortlessly.
+
+          <p className="font-saira text-[16px] md:text-[20px] leading-[170%] text-[#23262F] max-w-[480px] mx-auto lg:mx-0">
+            Furniture Power is a software-as-a-service platform for modern furniture businesses. 
+            We provide a blend of aesthetics and practicality, helping you manage every aspect of 
+            your furniture collection effortlessly.
           </p>
         </div>
-        
-        {/* Image on the right*/}
-        <div className="absolute bottom-0 left-0 w-full h-64 md:h-96 overflow-hidden flex justify-end lg:static lg:w-1/2 lg:h-auto lg:flex-none">
-          <div className="relative w-[598px] h-[399px] bg-[#EAEEF3] rounded-[6px] overflow-hidden">
+
+        {/* RIGHT: Image */}
+        <div className="w-full lg:w-[50%] flex justify-center lg:justify-end pr-0 lg:pr-[80px]">
+          <div className="w-full max-w-[598px] h-auto bg-[#EAEEF3] rounded-[6px] overflow-hidden shadow-sm">
             <img
-              className="w-full h-full object-cover object-center"
-              src="https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&w=800&q=80"
+              className="w-full h-auto object-cover object-center"
+              src="https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&w=1000&q=80"
               alt="Best furniture"
             />
           </div>
@@ -32,4 +36,3 @@ export default function Highlight() {
     </SectionWrapper>
   );
 }
-// The alignment is wrong, remember to fix that later

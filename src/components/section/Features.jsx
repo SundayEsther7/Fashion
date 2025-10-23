@@ -1,3 +1,5 @@
+// Responsive 🥳🥳🥳
+//The image needs th have some space on the left when responsive
 import SectionWrapper from "../common/SectionWrapper";
 
 export default function Featured() {
