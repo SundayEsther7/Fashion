@@ -9,6 +9,26 @@ export default function Testimonials() {
           <h2 className="text-4xl font-semibold text-primary">
             What People Are Saying
           </h2>
+          <p className="text-lg text-secondary leading-relaxed">
+            Furniture Power is a trusted brand loved by many customers. Our
+            quality craftsmanship and attention to detail make every piece stand
+            out in your home.
+          </p>
+
+          {/* Reviewer info */}
+          <div className="flex items-center gap-4 mt-8">
+            <img
+              src="https://randomuser.me/api/portraits/men/44.jpg"
+              alt="Reviewer"
+              className="w-20 h-20 rounded-full object-cover"
+            />
+            <div>
+              <p className="text-lg font-semibold text-primary">Josh Smith</p>
+              <p className="text-sm text-secondary opacity-60">
+                Manager of The New York Times
+              </p>
+            </div>
+          </div>
 
           {/* Navigation buttons */}
           <div className="flex items-center gap-4 mt-8">
@@ -32,7 +52,7 @@ export default function Testimonials() {
 
             <button className="w-12 h-12 flex items-center justify-center rounded-full bg-[#286F6C] shadow-md hover:opacity-90 transition">
               {/* Right arrow */}
-                <svg
+              <svg
                 xmlns="http://www.w3.org/2000/svg"
                 fill="none"
                 viewBox="0 0 24 24"
