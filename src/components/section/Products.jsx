@@ -72,15 +72,13 @@ export default function AllProducts() {
           the best products with number 1 quality in the world.
         </p>
       </div>
-      {/* Make this responsive */}
+
       {/* Cards grid */}
-      <div className="flex flex-wrap justify-center gap-8 max-w-[1240px] mx-auto">
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8 max-w-[1240px] mx-auto px-4">
         {products.map((product, index) => (
           <Card key={index} {...product} />
         ))}
       </div>
-
-      
     </SectionWrapper>
   );
 }
