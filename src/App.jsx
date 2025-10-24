@@ -4,7 +4,7 @@ import Services from "./components/section/Services"
 import Features from "./components/section/Features";
 import Highlight from "./components/section/Highlight";
 import Products from "./components/section/Products";
-
+import Testimonials from "./components/section/Testimonials";
 function App() {
   return (
     <>
@@ -14,7 +14,7 @@ function App() {
       <Features />
       <Highlight />
       <Products />
-
+      <Testimonials />
     </>
   );
 }
