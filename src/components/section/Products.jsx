@@ -1,5 +1,6 @@
 import SectionWrapper from "../common/SectionWrapper";
 import Card from "../common/Card";
+import Pagination from "../common/Pagination";
 
 export default function AllProducts() {
   const products = [
@@ -62,7 +63,7 @@ export default function AllProducts() {
   ];
 
   return (
-    <SectionWrapper className="py-20 bg-white">
+    <SectionWrapper className="relative py-24 px-6 md:px-12 mb-20">
       <div className="hover:scale-105 transition-transform duration-300 p-2 shadow-sm relative rounded-[16px] border-[rgba(16,38,55,0.1)] text-center border w-full max-w-[600px] mx-auto mb-12">
         <h2 className="text-[40px] font-semibold text-[#23262F]">
           All Product
@@ -79,6 +80,7 @@ export default function AllProducts() {
           <Card key={index} {...product} />
         ))}
       </div>
+      <Pagination />
     </SectionWrapper>
   );
 }
