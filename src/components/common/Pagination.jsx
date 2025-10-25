@@ -1,6 +1,32 @@
-export default function Pagination() {
-// 
+import { useState } from "react";
 
+export default function Pagination({
+  totalItems = 40,
+  itemsPerPage = 8,
+  onPageChange,
+}) {
+  // number of pages
+  const totalPages = Math.ceil(totalItems / itemsPerPage);
+
+  // current page state
+  const [currentPage, setCurrentPage] = useState(1);
+
+  // functions to handle next/prev
+  const goToNext = () => {
+    if (currentPage < totalPages) {
+      setCurrentPage(currentPage + 1);
+      onPageChange?.(currentPage + 1);
+    }
+  };
+
+  const goToPrev = () => {
+    if (currentPage > 1) {
+      setCurrentPage(currentPage - 1);
+      onPageChange?.(currentPage - 1);
+    }
+  };
+
+  // render
   return (
     <div
       className="
@@ -11,7 +37,15 @@ export default function Pagination() {
       "
     >
       {/* Left arrow */}
-      <button className="w-[50px] h-[50px] rounded-full bg-white shadow-md flex items-center justify-center hover:scale-105 transition">
+      <button
+        onClick={goToPrev}
+        disabled={currentPage === 1}
+        className={`w-[50px] h-[50px] rounded-full bg-white shadow-md flex items-center justify-center transition ${
+          currentPage === 1
+            ? "opacity-40 cursor-not-allowed"
+            : "hover:scale-105"
+        }`}
+      >
         <svg
           xmlns="http://www.w3.org/2000/svg"
           fill="none"
@@ -27,17 +61,35 @@ export default function Pagination() {
           />
         </svg>
       </button>
- {/* Dots */}
-    <div className="flex items-center gap-3">
-      <span className="w-2.5 h-2.5 bg-[#23262F] rounded-full"></span>
-      <span className="w-2.5 h-2.5 border border-[#23262F] rounded-full"></span>
-      <span className="w-2.5 h-2.5 border border-[#23262F] rounded-full"></span>
-      <span className="w-2.5 h-2.5 border border-[#23262F] rounded-full"></span>
-      <span className="w-2.5 h-2.5 border border-[#23262F] rounded-full"></span>
-    </div>
+
+      {/* Dots */}
+      <div className="flex items-center gap-3">
+        {Array.from({ length: totalPages }).map((_, index) => (
+          <span
+            key={index}
+            onClick={() => {
+              setCurrentPage(index + 1);
+              onPageChange?.(index + 1);
+            }}
+            className={`w-2.5 h-2.5 rounded-full cursor-pointer transition ${
+              currentPage === index + 1
+                ? "bg-[#23262F]"
+                : "border border-[#23262F] hover:bg-[#23262F]/40"
+            }`}
+          ></span>
+        ))}
+      </div>
 
       {/* Right arrow */}
-      <button className="w-[50px] h-[50px] rounded-full shadow-md flex items-center justify-center hover:scale-105 transition">
+      <button
+        onClick={goToNext}
+        disabled={currentPage === totalPages}
+        className={`w-[50px] h-[50px] rounded-full bg-white shadow-md flex items-center justify-center transition ${
+          currentPage === totalPages
+            ? "opacity-40 cursor-not-allowed"
+            : "hover:scale-105"
+        }`}
+      >
         <svg
           xmlns="http://www.w3.org/2000/svg"
           fill="none"
@@ -56,7 +108,3 @@ export default function Pagination() {
     </div>
   );
 }
-//NB:
-//Properly complete the pagination component above.
-//add the pagination component to the Products.jsx file
-//add more products to the products array in Products.jsx
