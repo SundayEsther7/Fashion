@@ -1,5 +1,4 @@
-// Responsive 🥳🥳🥳
-//The image needs th have some space on the left when responsive
+import { useEffect, useRef } from "react";
 import SectionWrapper from "../common/SectionWrapper";
 
 export default function Featured() {
@@ -30,11 +29,34 @@ export default function Featured() {
     },
   ];
 
+  // 🔹 useRef to control scroll position
+  const scrollRef = useRef(null);
+
+  // 🔹 Auto-scroll effect
+  useEffect(() => {
+    const container = scrollRef.current;
+    let scrollAmount = 0;
+
+    const scrollStep = () => {
+      if (!container) return;
+      scrollAmount += 1; // pixels to move each frame
+      container.scrollLeft = scrollAmount;
+
+      // Reset scroll when it reaches the end
+      if (scrollAmount >= container.scrollWidth - container.clientWidth) {
+        scrollAmount = 0;
+      }
+    };
+
+    const interval = setInterval(scrollStep, 30); // speed control (lower = slower)
+    return () => clearInterval(interval);
+  }, []);
+
   return (
     <SectionWrapper className="relative w-full max-w-[1440px] h-[540px] mx-auto overflow-hidden bg-white">
       {/* Left content */}
       <div className="absolute left-[100px] top-[100px] w-[245px] z-10">
-        <h2 className="text-[40px] font-semibold leading-[130%] text-[#23262F] mb-6 ">
+        <h2 className="text-[40px] font-semibold leading-[130%] text-[#23262F] mb-6">
           New in store now
         </h2>
         <p className="text-[16px] font-normal leading-[170%] tracking-[0.01em] text-[#23262F] mb-[60px]">
@@ -50,26 +72,33 @@ export default function Featured() {
         </div>
       </div>
 
-      {/* Product cards */}
-      <div className="absolute top-[70px] left-[415px] flex gap-[20px] overflow-hidden">
-        {products.map((product) => (
-          <div
-            key={product.id}
-            className="relative w-[265px] h-[400px] rounded-[5px] overflow-hidden flex-shrink-0"
-          >
-            <img
-              src={product.image}
-              alt={product.name}
-              className="w-full h-full object-cover"
-            />
-            {/* Gradient overlay */}
-            <div className="absolute inset-0 bg-gradient-to-b from-transparent to-black/40"></div>
-            {/* Product name */}
-            <p className="absolute bottom-[35px] left-1/2 -translate-x-1/2 text-white text-[28px] font-semibold leading-[160%] tracking-[0.01em]">
-              {product.name}
-            </p>
-          </div>
-        ))}
+      {/* Product cards (scrollable + auto scroll) */}
+      <div
+        ref={scrollRef}
+        className="absolute top-[70px] left-[415px] flex gap-[20px] overflow-x-auto no-scrollbar scroll-smooth"
+      >
+        {products.concat(products).map(
+          (
+            product // duplicated to make infinite-like loop
+          ) => (
+            <div
+              key={product.id + Math.random()}
+              className="relative w-[265px] h-[400px] rounded-[5px] overflow-hidden flex-shrink-0 hover:scale-105 transition-transform duration-500"
+            >
+              <img
+                src={product.image}
+                alt={product.name}
+                className="w-full h-full object-cover"
+              />
+              {/* Gradient overlay */}
+              <div className="absolute inset-0 bg-gradient-to-b from-transparent to-black/40"></div>
+              {/* Product name */}
+              <p className="absolute bottom-[35px] left-1/2 -translate-x-1/2 text-white text-[28px] font-semibold leading-[160%] tracking-[0.01em]">
+                {product.name}
+              </p>
+            </div>
+          )
+        )}
       </div>
     </SectionWrapper>
   );
