@@ -1,23 +1,57 @@
-import { FaFacebookF, FaTwitter, FaInstagram, FaLinkedinIn } from "react-icons/fa";
+//Responsive
+import {
+  FaFacebookF,
+  FaTwitter,
+  FaInstagram,
+  FaLinkedinIn,
+} from "react-icons/fa";
 
 export default function Footer() {
   return (
     <footer className="bg-[#23262F] text-white py-16 px-6">
       <div className="max-w-[1240px] mx-auto">
         {/* Top Section */}
-        <div className="flex flex-col md:flex-row justify-between items-center mb-10">
-          <h2 className="text-2xl font-bold font-[Raleway]">Furniturepower</h2>
-          <div className="flex gap-4 mt-4 md:mt-0">
-            {[FaFacebookF, FaTwitter, FaInstagram, FaLinkedinIn].map((Icon, i) => (
-              <div
-                key={i}
-                className="bg-white/10 w-10 h-10 flex items-center justify-center rounded-full hover:bg-white/20 transition"
-              >
-                <Icon className="text-white" />
-              </div>
-            ))}
-          </div>
+<div className="flex flex-col md:flex-row justify-between items-center mb-10">
+  <h2 className="text-2xl font-bold font-[Raleway]">Furniturepower</h2>
+  <div className="flex gap-4 mt-4 md:mt-0">
+    {[
+      { Icon: FaFacebookF, hover: "#1877F2", shadow: "0 0 10px #1877F2" },
+      { Icon: FaTwitter, hover: "#1DA1F2", shadow: "0 0 10px #1DA1F2" },
+      { Icon: FaInstagram, hover: "#E4405F", shadow: "0 0 10px #E4405F" },
+      { Icon: FaLinkedinIn, hover: "#0077B5", shadow: "0 0 10px #0077B5" },
+    ].map(({ Icon, hover, shadow }, i) => {
+      // alternate direction: even icons rotate right, odd rotate left
+      const rotateDirection = i % 2 === 0 ? "10deg" : "-10deg";
+      return (
+        <div
+          key={i}
+          className="
+            w-10 h-10 flex items-center justify-center rounded-full
+            bg-white/10 text-white
+            transition-all duration-300 cursor-pointer
+          "
+          style={{
+            transition: "all 0.3s ease",
+          }}
+          onMouseEnter={(e) => {
+            e.currentTarget.style.backgroundColor = hover;
+            e.currentTarget.style.boxShadow = shadow;
+            e.currentTarget.style.transform = `scale(1.15) rotate(${rotateDirection})`;
+          }}
+          onMouseLeave={(e) => {
+            e.currentTarget.style.backgroundColor = "rgba(255,255,255,0.1)";
+            e.currentTarget.style.boxShadow = "none";
+            e.currentTarget.style.transform = "scale(1) rotate(0deg)";
+          }}
+        >
+          <Icon className="text-lg" />
         </div>
+      );
+    })}
+  </div>
+</div>
+
+
 
         {/* Middle Section - Links */}
         <div className="grid grid-cols-2 md:grid-cols-5 gap-8 mb-10">
