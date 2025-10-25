@@ -7,8 +7,8 @@ export default function CTA() {
       <div className="absolute inset-0 bg-black/40"></div>
 
       {/* Content */}
-      <div className="relative z-10 max-w-[1240px] mx-auto h-full flex flex-col justify-center items-center text-center px-4 text-white gap-6">
-        <div >
+      <div className="relative z-10 max-w-[1240px] mx-auto h-full flex flex-col justify-center lg:items-end px-6 lg:px-12">
+        <div className="text-white text-center lg:text-right max-w-[558px] space-y-6">
           <h2 className="text-4xl md:text-5xl font-semibold leading-[1.35]">
             Get more discount<br />off your order
           </h2>
@@ -16,7 +16,17 @@ export default function CTA() {
             Join our newsletter and receive special promo offers instantly.
           </p>
 
-          
+          {/* Form */}
+          <div className="flex flex-col sm:flex-row items-center gap-4 mt-6">
+            <input
+              type="email"
+              placeholder="Enter your email"
+              className="w-full sm:w-[384px] h-[60px] rounded-md px-4 text-gray-800 placeholder-gray-500 focus:outline-none"
+            />
+            <button className="w-full sm:w-[152px] h-[60px] bg-[#23262F] text-white rounded-md font-semibold text-lg hover:bg-gray-900 transition">
+              Subscribe
+            </button>
+          </div>
         </div>
       </div>
     </SectionWrapper>
