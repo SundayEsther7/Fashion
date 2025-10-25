@@ -1,3 +1,4 @@
+//Responsive
 import { useState } from "react";
 import SectionWrapper from "../common/SectionWrapper";
 
@@ -33,113 +34,127 @@ export default function Testimonials() {
   // Step 2: Active testimonial index
   const [currentIndex, setCurrentIndex] = useState(0);
 
-  // Step 3: Navigation functions
-  const handlePrev = () => {
-    setCurrentIndex((prev) =>
-      prev === 0 ? testimonials.length - 1 : prev - 1
-    );
+   // Step 3: Navigation functions
+  const handleChange = (dir) => {
+    setCurrentIndex((prev) => {
+      if (dir === "next") return (prev + 1) % testimonials.length;
+      else return (prev - 1 + testimonials.length) % testimonials.length;
+    });
   };
 
-  const handleNext = () => {
-    setCurrentIndex((prev) =>
-      prev === testimonials.length - 1 ? 0 : prev + 1
-    );
-  };
-
-  // Step 4: Current testimonial data
-  const testimonial = testimonials[currentIndex];
-
+  // Step 4: Render
   return (
     <SectionWrapper className="relative py-24 px-6 md:px-12 bg-white overflow-hidden">
       <div className="max-w-[1240px] mx-auto flex flex-col-reverse lg:flex-row items-center gap-12">
-        {/* LEFT SIDE: Text content */}
-        <div className="w-full lg:w-1/2 space-y-6 transition-all duration-500 ease-in-out">
-          <h2 className="text-4xl font-semibold text-[#23262F]">
-            What People Are Saying
-          </h2>
-          <p className="text-lg text-[#23262F]/80 leading-relaxed">
-            {testimonial.text}
-          </p>
 
-          {/* Reviewer info */}
-          <div className="flex items-center gap-4 mt-8">
-            <img
-              src={testimonial.image}
-              alt={testimonial.name}
-              className="w-20 h-20 rounded-full object-cover"
-            />
-            <div>
-              <p className="text-lg font-semibold text-[#23262F]">
-                {testimonial.name}
+        {/* LEFT SIDE: Sliding Text */}
+        <div className="relative w-full lg:w-1/2 h-[420px] overflow-hidden">
+          {testimonials.map((t, index) => (
+            <div
+              key={index}
+              className={`absolute top-0 left-0 w-full transition-transform duration-500 ${
+                index === currentIndex
+                  ? "translate-x-0 opacity-100"
+                  : index < currentIndex
+                  ? "-translate-x-full opacity-0"
+                  : "translate-x-full opacity-0"
+              }`}
+            >
+              <h2 className="text-4xl font-semibold text-[#23262F] mb-4">
+                What People Are Saying
+              </h2>
+              <p className="text-lg text-[#23262F]/80 leading-relaxed">
+                {t.text}
               </p>
-              <p className="text-sm text-[#23262F]/60">{testimonial.role}</p>
+
+              <div className="flex items-center gap-4 mt-8">
+                <img
+                  src={t.image}
+                  alt={t.name}
+                  className="w-20 h-20 rounded-full object-cover"
+                />
+                <div>
+                  <p className="text-lg font-semibold text-[#23262F]">
+                    {t.name}
+                  </p>
+                  <p className="text-sm text-[#23262F]/60">{t.role}</p>
+                </div>
+              </div>
             </div>
-          </div>
-
-          {/* Navigation arrows */}
-          <div className="flex items-center gap-4 mt-8">
-            <button
-              onClick={handlePrev}
-              className="w-12 h-12 flex items-center justify-center rounded-full bg-white shadow-md border hover:bg-gray-50 transition"
-            >
-              {/* Left arrow */}
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                fill="none"
-                viewBox="0 0 24 24"
-                strokeWidth={1.5}
-                stroke="currentColor"
-                className="size-6"
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  d="M15.75 19.5 8.25 12l7.5-7.5"
-                />
-              </svg>
-            </button>
-
-            <button
-              onClick={handleNext}
-              className="w-12 h-12 flex items-center justify-center rounded-full bg-[#286F6C] shadow-md hover:opacity-90 transition"
-            >
-              {/* Right arrow */}
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                fill="none"
-                viewBox="0 0 24 24"
-                strokeWidth={1.5}
-                stroke="#ffffff"
-                className="size-6"
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  d="m8.25 4.5 7.5 7.5-7.5 7.5"
-                />
-              </svg>
-            </button>
-          </div>
+          ))}
         </div>
 
-        {/* RIGHT SIDE: Background image */}
-        <div className="w-full lg:w-1/2 transition-all duration-500 ease-in-out">
-          <img
-            key={testimonial.background} // Helps React detect image change
-            src={testimonial.background}
-            alt="Testimonial Visual"
-            className="rounded-md w-full h-[340px] object-cover transition-all duration-500 ease-in-out"
-          />
+        {/* RIGHT SIDE: Sliding Images */}
+        <div className="relative w-full lg:w-1/2 h-[340px] overflow-hidden rounded-md">
+          {testimonials.map((t, index) => (
+            <img
+              key={index}
+              src={t.background}
+              alt="Testimonial Visual"
+              className={`absolute top-0 left-0 w-full h-full object-cover rounded-md transition-transform duration-500 ${
+                index === currentIndex
+                  ? "translate-x-0 opacity-100"
+                  : index < currentIndex
+                  ? "-translate-x-full opacity-0"
+                  : "translate-x-full opacity-0"
+              }`}
+            />
+          ))}
         </div>
       </div>
 
-      {/* Step 5: Pagination dots */}
-      <div className="flex justify-center mt-8 gap-3">
+      {/* NAVIGATION */}
+      <div className="flex justify-center mt-8 gap-4">
+        <button
+          onClick={() => handleChange("prev")}
+          className="w-12 h-12 flex items-center justify-center rounded-full bg-white shadow-md border hover:bg-gray-50 transition"
+        >
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            fill="none"
+            viewBox="0 0 24 24"
+            strokeWidth={1.5}
+            stroke="currentColor"
+            className="size-6"
+          >
+            <path
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              d="M15.75 19.5 8.25 12l7.5-7.5"
+            />
+          </svg>
+        </button>
+
+        <button
+          onClick={() => handleChange("next")}
+          className="w-12 h-12 flex items-center justify-center rounded-full bg-[#286F6C] shadow-md hover:opacity-90 transition"
+        >
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            fill="none"
+            viewBox="0 0 24 24"
+            strokeWidth={1.5}
+            stroke="#ffffff"
+            className="size-6"
+          >
+            <path
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              d="m8.25 4.5 7.5 7.5-7.5 7.5"
+            />
+          </svg>
+        </button>
+      </div>
+
+      {/* DOTS */}
+      <div className="flex justify-center mt-6 gap-3">
         {testimonials.map((_, i) => (
           <span
             key={i}
             className={`w-3 h-3 rounded-full transition-all duration-300 ${
-              i === currentIndex ? "bg-[#23262F]" : "border border-[#23262F]"
+              i === currentIndex
+                ? "bg-[#23262F]"
+                : "border border-[#23262F]"
             }`}
           ></span>
         ))}
