@@ -1,32 +1,57 @@
 export default function Card({ image, name, price, oldPrice }) {
   return (
-    <div className="w-[290px] h-[380px] bg-white border border-[rgba(16,38,55,0.1)] rounded-[16px] p-2 relative shadow-sm hover:scale-105 transition-transform duration-300">
-      {/* Product Image */}
-      <div className="w-full h-[300px] rounded-[16px] overflow-hidden">
+    <div className="
+      group
+      w-[290px] h-[380px]
+      bg-white border border-neutralLight
+      rounded-[16px] p-3 relative shadow-sm
+      hover:shadow-lg hover:-translate-y-1
+      transition-all duration-300
+    ">
+
+      {/* Image */}
+      <div className="w-full h-[300px] rounded-[12px] overflow-hidden relative">
         <img
           src={image}
           alt={name}
-          className="w-full h-full object-cover rounded-[16px]"
+          className="w-full h-full object-cover rounded-[12px] group-hover:scale-110 transition-transform duration-500"
         />
+
+        {/* Hover Accent Glow */}
+        <div className="absolute inset-0 rounded-[12px] border-2 border-transparent group-hover:border-accent/80 transition"></div>
       </div>
 
-      {/* Product Name */}
-      <h3 className="text-[24px] font-semibold text-[#23262F] mt-2">{name}</h3>
+      {/* Name */}
+      <h3 className="text-[20px] font-bold text-primary mt-3 tracking-tight">
+        {name}
+      </h3>
 
       {/* Price */}
       <div className="flex items-center gap-2 mt-1">
-        <span className="text-[16px] font-medium text-[#23262F]">{price}</span>
-        <span className="text-[14px] line-through opacity-50 text-[#23262F]">
-          {oldPrice}
+        <span className="text-[16px] font-semibold text-secondary">
+          {price}
         </span>
+
+        {oldPrice && (
+          <span className="text-[14px] line-through opacity-50 text-neutralDark">
+            {oldPrice}
+          </span>
+        )}
       </div>
 
-      {/* Plus Button (floating circle) */}
-      <div className="absolute bottom-[130px] right-[25px] bg-gray-200 w-[30px] h-[30px] rounded-full flex items-center justify-center hover:bg-gray-300 cursor-pointer">
-        <div className="relative w-full h-full flex justify-center items-center text-black text-[24px]">
-          +
-        </div>
-      </div>
+      {/* Add to Cart / Floating Button */}
+      <button
+        className="
+          absolute bottom-[110px] right-[20px]
+          w-[34px] h-[34px] rounded-full
+          flex items-center justify-center
+          bg-accent text-primary font-bold
+          hover:bg-accent/80 hover:scale-110
+          transition
+        "
+      >
+        +
+      </button>
     </div>
   );
 }
