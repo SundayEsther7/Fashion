@@ -1,7 +1,7 @@
-// Responsive 🥳🥳🥳
-
 
 import SectionWrapper from "../common/SectionWrapper";
+
+
 
 export default function Highlight() {
   return (

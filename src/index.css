@@ -10,3 +10,25 @@ body {
 }
 
 
+/* Hide scrollbar */
+.scroll-hide::-webkit-scrollbar {
+  height: 0px;
+}
+
+/* Show scrollbar when hovering */
+.scroll-hide:hover::-webkit-scrollbar {
+  height: 6px;
+}
+
+.scroll-hide::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.scroll-hide::-webkit-scrollbar-thumb {
+  background: #999;
+  border-radius: 3px;
+}
+
+.scroll-hide:hover::-webkit-scrollbar-thumb {
+  background: #666;
+}
