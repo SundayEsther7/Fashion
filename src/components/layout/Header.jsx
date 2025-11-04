@@ -13,11 +13,19 @@ export default function Header() {
       </h1>
 
       {/* NAV DESKTOP */}
-      <nav className="hidden md:flex gap-8 text-white text-[16px] font-medium">
-        <a href="#" className="hover:text-[#FF6F3C] transition">Home</a>
-        <a href="#" className="hover:text-[#FF6F3C] transition">Shop</a>
-        <a href="#" className="hover:text-[#FF6F3C] transition">About</a>
-        <a href="#" className="hover:text-[#FF6F3C] transition">Contact</a>
+      <nav className="hidden md:flex gap-8 text-white font-saira text-sm">
+        <Link to="/" className="hover:text-accent transition">
+          Home
+        </Link>
+        <Link to="/shop" className="hover:text-accent transition">
+          Shop
+        </Link>
+        <Link to="/about" className="hover:text-accent transition">
+          About
+        </Link>
+        <Link to="/contact" className="hover:text-accent transition">
+          Contact
+        </Link>
       </nav>
 
       {/* HAMBURGER BUTTON */}
@@ -25,19 +33,34 @@ export default function Header() {
         onClick={() => setOpen(!open)}
         className="md:hidden text-white focus:outline-none"
       >
-        <svg className="w-7 h-7" fill="none" stroke="currentColor" strokeWidth="2"
-          viewBox="0 0 24 24" strokeLinecap="round" strokeLinejoin="round">
-          <path d="M4 6h16M4 12h16M4 18h16"/>
+        <svg
+          className="w-7 h-7"
+          fill="none"
+          stroke="currentColor"
+          strokeWidth="2"
+          viewBox="0 0 24 24"
+          strokeLinecap="round"
+          strokeLinejoin="round"
+        >
+          <path d="M4 6h16M4 12h16M4 18h16" />
         </svg>
       </button>
 
       {/* MOBILE MENU */}
       {open && (
-        <div className="absolute top-full left-0 w-full bg-black/80 backdrop-blur-lg py-6 flex flex-col gap-4 text-center text-white md:hidden">
-          <a href="#" className="hover:text-[#FF6F3C] transition">Home</a>
-          <a href="#" className="hover:text-[#FF6F3C] transition">Shop</a>
-          <a href="#" className="hover:text-[#FF6F3C] transition">About</a>
-          <a href="#" className="hover:text-[#FF6F3C] transition">Contact</a>
+        <div className="md:hidden bg-black/70 backdrop-blur-sm text-white text-center font-saira py-4 space-y-4">
+          <Link to="/" className="block hover:text-accent transition">
+            Home
+          </Link>
+          <Link to="/shop" className="block hover:text-accent transition">
+            Shop
+          </Link>
+          <Link to="/about" className="block hover:text-accent transition">
+            About
+          </Link>
+          <Link to="/contact" className="block hover:text-accent transition">
+            Contact
+          </Link>
         </div>
       )}
     </header>
