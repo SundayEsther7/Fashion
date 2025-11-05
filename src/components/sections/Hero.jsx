@@ -1,6 +1,7 @@
 import skate1 from "../../assets/skate1.jpg";
 import SectionWrapper from "../common/SectionWrapper";
 import { motion } from "framer-motion";
+import { Link } from "react-router-dom";
 
 export default function Hero() {
   return (
@@ -27,9 +28,9 @@ export default function Hero() {
             Built for the streets — where motion meets style.
           </p>
 
-          <button className="bg-accent text-primary font-bold px-12 py-4 rounded-lg hover:bg-accent/80 transition font-saira">
-            Shop Skates
-          </button>
+          <Link to="/shop" className="bg-accent text-primary font-bold px-12 py-4 rounded-lg hover:bg-accent/80 transition font-saira">
+            Shop Now
+          </Link>
         </motion.div>
 
         {/* Stats Bar */}
