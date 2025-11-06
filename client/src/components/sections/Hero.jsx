@@ -28,8 +28,8 @@ export default function Hero() {
             Built for the streets — where motion meets style.
           </p>
 
-          <Link to="/shop" className="bg-accent text-primary font-bold px-12 py-4 rounded-lg hover:bg-accent/80 transition font-saira">
-            Shop Now
+          <Link to="/register" className="bg-accent text-primary font-bold px-12 py-4 rounded-lg hover:bg-accent/80 transition font-saira">
+            Get Started
           </Link>
         </motion.div>
 
