@@ -1,8 +1,12 @@
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
+import { useAuthStore } from "../store/auth.js";
 
 export default function Login() {
   const navigate = useNavigate();
+  
+const { setUser } = useAuthStore(); 
+  const login = useAuthStore((state) => state.login); // access login function
   const [formData, setFormData] = useState({ email: "", password: "" });
 
   const handleChange = (e) => {
@@ -22,7 +26,9 @@ export default function Login() {
     console.log(data);
 
     if (response.ok) {
-      localStorage.setItem("token", data.token);
+      // login(data.user, data.token); // store user and token
+      localStorage.setItem("token", data.token);// store token in local storage
+       setUser(data.user, data.token);
       navigate("/"); // later we change this to dashboard
     }
   };

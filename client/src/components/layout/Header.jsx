@@ -1,8 +1,12 @@
 import { useState } from "react";
 import { Link, useLocation } from "react-router-dom";
+import { useAuthStore } from "../../store/auth";
 
 export default function Header() {
   const [open, setOpen] = useState(false);
+  
+const { user, logout } = useAuthStore();
+
 
   // Detect the current page route
   const { pathname } = useLocation();
@@ -61,8 +65,56 @@ export default function Header() {
           <Link to="/shop" onClick={() => setOpen(false)} className="block hover:text-accent transition">Shop</Link>
           <Link to="/about" onClick={() => setOpen(false)} className="block hover:text-accent transition">About</Link>
           <Link to="/contact" onClick={() => setOpen(false)} className="block hover:text-accent transition">Contact</Link>
+        
+        {user ? (
+  <>
+    <span className="block font-semibold py-2">Hi, {user.name}</span>
+    <button
+      onClick={() => { logout(); setOpen(false); }}
+      className="block text-accent hover:underline mx-auto"
+    >
+      Logout
+    </button>
+  </>
+) : (
+  <>
+    <Link to="/login" onClick={() => setOpen(false)} className="block hover:text-accent">
+      Login
+    </Link>
+    <Link to="/register" onClick={() => setOpen(false)} className="block hover:text-accent">
+      Sign Up
+    </Link>
+  </>
+)}
+
         </div>
       )}
+      {/* AUTH BUTTONS (RIGHT SIDE) */}
+<div className="hidden md:flex items-center gap-6">
+  {user ? (
+    <>
+      <span className={`${isHome ? "text-white" : "text-primary"} font-semibold`}>
+        Hi, {user.name}
+      </span>
+      <button
+        onClick={logout}
+        className="text-accent hover:underline"
+      >
+        Logout
+      </button>
+    </>
+  ) : (
+    <>
+      <Link to="/login" className={`${isHome ? "text-white" : "text-primary"} hover:text-accent transition`}>
+        Login
+      </Link>
+      <Link to="/register" className="bg-accent text-white px-4 py-2 rounded hover:bg-accent/80 transition">
+        Sign Up
+      </Link>
+    </>
+  )}
+</div>
+
     </header>
   );
 }
