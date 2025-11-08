@@ -5,14 +5,26 @@ import { useAuthStore } from "../store/auth.js";
 export default function Login() {
   const navigate = useNavigate();
   
-const { setUser } = useAuthStore(); 
+const loginUser = useAuthStore((state) => state.login);
   const login = useAuthStore((state) => state.login); // access login function
   const [formData, setFormData] = useState({ email: "", password: "" });
 
+/**
+ * Handles changes to the form data by updating the state with the new value.
+ * @param {Object} e - The event object from the form input.
+ * @returns {void}
+ */
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
+/**
+ * Handles the form submission by sending the form data to the backend
+ * and checking if the response was successful.
+ * If the response was successful, it logs the user in and navigates to the dashboard.
+ * @param {Object} e - The event object from the form submission.
+ * @returns {void}
+ */
   const handleSubmit = async (e) => {
     e.preventDefault();
 
@@ -26,9 +38,7 @@ const { setUser } = useAuthStore();
     console.log(data);
 
     if (response.ok) {
-      // login(data.user, data.token); // store user and token
-      localStorage.setItem("token", data.token);// store token in local storage
-       setUser(data.user, data.token);
+      loginUser(data.user, data.token); // store user and token
       navigate("/"); // later we change this to dashboard
     }
   };
@@ -41,7 +51,7 @@ const { setUser } = useAuthStore();
           Welcome Back
         </h1>
 
-        <form onSubmit={handleSubmit} className="space-y-5 text-white">
+        <form onSubmit={handleSubmit} className="space-y-5 text-primary">
 
           <input
             type="email"

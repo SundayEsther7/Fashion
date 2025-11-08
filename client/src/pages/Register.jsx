@@ -1,25 +1,36 @@
 import { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 export default function Register() {
+  const navigate = useNavigate(); //For navigation
   const [formData, setFormData] = useState({ name: "", email: "", password: "" });
 
   const handleChange = (e) => {
-    setFormData({ ...formData, [e.target.name]: e.target.value });
+    setFormData({ ...formData, [e.target.name]: e.target.value });// update form data
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
 
+    // send form data to backend
     const response = await fetch("http://localhost:5000/api/auth/register", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(formData),
     });
 
+    // get response
     const data = await response.json();
     console.log(data);
-  };
+
+  // check if registration was successful
+   if (response.ok) {
+    alert("Account created! Please log in.");
+    navigate("/login");
+  } else {
+    alert(data.message || "Something went wrong");
+  }
+};
 
   return (
     <section className="min-h-[100vh] flex items-center justify-center bg-neutralLight px-4">
