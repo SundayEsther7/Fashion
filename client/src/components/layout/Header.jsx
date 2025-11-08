@@ -78,19 +78,22 @@ const { user, logout } = useAuthStore();
   </>
 ) : (
   <>
-    <Link to="/login" onClick={() => setOpen(false)} className="block hover:text-accent">
-      Login
-    </Link>
     <Link to="/register" onClick={() => setOpen(false)} className="block hover:text-accent">
-      Sign Up
+      Get Started
     </Link>
   </>
 )}
 
         </div>
       )}
+
+      {/* For now this is hidden to maintain the layout */}
+
+
+
+      
       {/* AUTH BUTTONS (RIGHT SIDE) */}
-<div className="hidden md:flex items-center gap-6">
+{/* <div className="hidden md:flex items-center gap-6">
   {user ? (
     <>
       <span className={`${isHome ? "text-white" : "text-primary"} font-semibold`}>
@@ -104,16 +107,13 @@ const { user, logout } = useAuthStore();
       </button>
     </>
   ) : (
-    <>
-      <Link to="/login" className={`${isHome ? "text-white" : "text-primary"} hover:text-accent transition`}>
-        Login
-      </Link>
+    
+    
       <Link to="/register" className="bg-accent text-white px-4 py-2 rounded hover:bg-accent/80 transition">
-        Sign Up
+       Get Started
       </Link>
-    </>
   )}
-</div>
+</div> */}
 
     </header>
   );
