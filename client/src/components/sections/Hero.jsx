@@ -13,6 +13,9 @@ export default function Hero() {
         {/* Dark overlay */}
         <div className="absolute inset-0 bg-black/50"></div>
 
+{/* White gradient */}
+        <div className="absolute inset-x-0 bottom-0 h-10 bg-gradient-to-t from-white to-transparent pointer-events-none"></div>
+
         {/* Text Content */}
         <motion.div
           initial={{ opacity: 0, y: 40 }}
@@ -33,32 +36,7 @@ export default function Hero() {
           </Link>
         </motion.div>
 
-        {/* Stats Bar */}
-        <div
-          className="absolute bottom-6 left-1/2 -translate-x-1/2 
-            w-[90%] max-w-[1100px] h-[130px]
-            bg-white/10 backdrop-blur-md border border-white/20
-            rounded-lg text-white font-saira flex justify-around items-center 
-            text-center text-sm md:text-base divide-x divide-white/30"
-        >
-          <div className="px-4">
-            <span className="text-accent text-xl font-bold">5+</span>
-            <p className="text-xs opacity-80">years in the scene</p>
-          </div>
-          <div className="px-4">
-            <span className="text-accent text-xl font-bold">3</span>
-            <p className="text-xs opacity-80">skate hubs in Nairobi</p>
-          </div>
-          <div className="px-4">
-            <span className="text-accent text-xl font-bold">12k+</span>
-            <p className="text-xs opacity-80">skaters styled</p>
-          </div>
-          <div className="px-4">
-            <span className=" text-accent text-xl font-bold">200+</span>
-            <p className="text-xs opacity-80">skate gear items</p>
-          </div>
-        </div>
-      </section>
+        </section>
     </SectionWrapper>
   );
 }
