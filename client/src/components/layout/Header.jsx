@@ -3,9 +3,9 @@ import { Link, useLocation } from "react-router-dom";
 import { useAuthStore } from "../../store/auth";
 
 export default function Header() {
-  const [open, setOpen] = useState(false);
+  const [open, setOpen] = useState(false);// to open and close the mobile menu
   
-const { user, logout } = useAuthStore();
+const { user, logout } = useAuthStore();// access user and logout function
 
 
   // Detect the current page route
@@ -33,11 +33,24 @@ const { user, logout } = useAuthStore();
 
       {/* DESKTOP NAVIGATION */}
       {/* Text color also depends on whether we are on the Hero or not */}
-      <nav className={`hidden md:flex gap-8 font-saira text-sm ${isHome ? "text-white" : "text-primary"}`}>
+      <nav className={`hidden md:flex gap-8 text-sm ${isHome ? "text-white" : "text-primary"}`}>
         <Link to="/" className="hover:text-accent transition">Home</Link>
         <Link to="/shop" className="hover:text-accent transition">Shop</Link>
         <Link to="/about" className="hover:text-accent transition">About</Link>
         <Link to="/contact" className="hover:text-accent transition">Contact</Link>
+      
+      
+      {/* Login/Logout */}
+      {/* {user ? (
+    <button onClick={logout} className="hover:text-accent transition">
+      Logout
+    </button>
+  ) : (
+    <Link to="/login" className="hover:text-accent transition">
+      Login
+    </Link>
+  )} */}
+     
       </nav>
 
       {/* MOBILE MENU TOGGLE BUTTON (Hamburger) */}

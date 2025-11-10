@@ -39,7 +39,7 @@ const loginUser = useAuthStore((state) => state.login);
 
     if (response.ok) {
       loginUser(data.user, data.token); // store user and token
-      navigate("/"); // later we change this to dashboard
+      navigate("/dashboard"); // navigate to dashboard
     }
   };
 

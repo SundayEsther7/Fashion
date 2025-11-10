@@ -22,7 +22,7 @@ export default function CTA() {
 
   return (
     <SectionWrapper
-      className="relative w-full h-[480px] bg-[url('/src/assets/background.jpg')] bg-cover bg-center"
+      className="relative pt-1 mt-1 w-full h-[480px] bg-[url('/src/assets/background.jpg')] bg-cover bg-center"
     >
       <div className="absolute inset-0 bg-primary/60"></div>
 

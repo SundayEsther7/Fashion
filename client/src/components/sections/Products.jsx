@@ -244,7 +244,8 @@ export default function AllProducts() {
 
   //3. render
   return (
-    <SectionWrapper className="relative py-24 px-6 md:px-12 mb-20">
+    //Removed padding
+    <SectionWrapper className="relative py-1 m-1 ">
       {/* Header */}
       <div className="hover:scale-105 transition-transform duration-300 p-2 shadow-sm relative rounded-[16px] border-[rgba(16,38,55,0.1)] text-center border w-full max-w-[600px] mx-auto mb-12">
         <h2 className="text-[40px] font-semibold text-[#23262F]">

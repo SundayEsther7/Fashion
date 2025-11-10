@@ -49,7 +49,7 @@ export default function Testimonials() {
     setCurrentIndex((prev) => (prev - 1 + testimonials.length) % testimonials.length);
 
   return (
-    <SectionWrapper className="relative py-24 px-6 md:px-12 bg-white">
+    <SectionWrapper className="relative py-1 m-1 px-6 md:px-12">
 
       <div className="max-w-[1240px] mx-auto">
 
@@ -66,7 +66,7 @@ export default function Testimonials() {
                 initial={{ opacity: 0, x: 80 }}
                 animate={{ opacity: 1, x: 0 }}
                 exit={{ opacity: 0, x: -80 }}
-                transition={{ duration: 0.6 }}
+                transition={{ duration: 0.3 }}
                 className="flex flex-col lg:flex-row items-center gap-12"
               >
                 {/* TEXT */}
@@ -112,12 +112,12 @@ export default function Testimonials() {
         </div>
         { /* ARROWS */}
          {/* ARROWS — outside content */}
-<div className="absolute left-6 bottom-8 flex gap-3 z-20">
+<div className="absolute left-6 bottom-0 flex gap-3 z-20">
 
   {/* Prev Arrow */}
   <button
     onClick={prev}
-    className="w-12 h-12 border border-neutralDark rounded-full flex items-center justify-center hover:bg-neutralLight transition"
+    className="w-10 h-10 border border-neutralDark rounded-full flex items-center justify-center hover:bg-neutralLight transition"
   >
     <svg className="w-6 h-6 text-neutralDark" fill="none" stroke="currentColor" strokeWidth={1.5} viewBox="0 0 24 24">
       <path strokeLinecap="round" strokeLinejoin="round" d="M15.75 19.5 8.25 12l7.5-7.5" />
@@ -127,7 +127,7 @@ export default function Testimonials() {
   {/* Next Arrow */}
   <button
     onClick={next}
-    className="w-12 h-12 bg-accent rounded-full flex items-center justify-center hover:bg-accent/80 transition"
+    className="w-10 h-10 bg-accent rounded-full flex items-center justify-center hover:bg-accent/80 transition"
   >
     <svg className="w-6 h-6 text-neutralDark" fill="none" stroke="currentColor" strokeWidth={1.5} viewBox="0 0 24 24">
       <path strokeLinecap="round" strokeLinejoin="round" d="m8.25 4.5 7.5 7.5-7.5 7.5" />

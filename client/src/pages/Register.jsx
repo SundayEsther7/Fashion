@@ -27,6 +27,7 @@ export default function Register() {
    if (response.ok) {
     alert("Account created! Please log in.");
     navigate("/login");
+    return;
   } else {
     alert(data.message || "Something went wrong");
   }

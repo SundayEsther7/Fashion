@@ -10,25 +10,24 @@ body {
 }
 
 
-/* Hide scrollbar */
-.scroll-hide::-webkit-scrollbar {
-  height: 0px;
-}
+@keyframes marquee {
+          0% {
+            transform: translateX(0%);
+          }
+          100% {
+            transform: translateX(-50%);
+          }
+        }
 
-/* Show scrollbar when hovering */
-.scroll-hide:hover::-webkit-scrollbar {
-  height: 6px;
-}
+        .animate-marquee {
+          display: flex;
+          animation: marquee 20s linear infinite;
+        }
 
-.scroll-hide::-webkit-scrollbar-track {
-  background: transparent;
-}
+        .pause-marquee {
+          animation-play-state: paused;
+        }
 
-.scroll-hide::-webkit-scrollbar-thumb {
-  background: #999;
-  border-radius: 3px;
-}
-
-.scroll-hide:hover::-webkit-scrollbar-thumb {
-  background: #666;
-}
+        .hover\\:pause-marquee:hover {
+          animation-play-state: paused;
+        }

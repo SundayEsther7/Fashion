@@ -279,7 +279,7 @@ const [category, setCategory] = useState("All");
   }
 
   return (
-    <div className="pt-[120px] px-6 md:px-12 max-w-[1400px] mx-auto mb-20">
+    <div className="pt-[120px] px-6 md:px-12 max-w-[1400px] bg-neutralLight mx-auto mb-20">
       {/* Title */}
       <h1 className="text-4xl font-extrabold text-primary text-center mb-10">
         Shop UrbanGlide

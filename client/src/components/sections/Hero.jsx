@@ -5,7 +5,7 @@ import { Link } from "react-router-dom";
 
 export default function Hero() {
   return (
-    <SectionWrapper>
+    <SectionWrapper className="">
       <section
         className="relative h-[100vh] max-h-[1000px] flex items-center justify-center text-center bg-cover bg-center"
         style={{ backgroundImage: `url(${skate1})` }}

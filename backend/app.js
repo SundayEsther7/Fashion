@@ -1,10 +1,9 @@
-// B:\my-project\backend\app.js
 import express from "express";
 import cors from "cors";
 import mongoose from "mongoose";
 import dotenv from "dotenv";
 
-import authRoutes from "./Routes/authRoutes.js"; // ✅ Correct
+import authRoutes from "./Routes/authRoutes.js"; 
 
 dotenv.config();
 
@@ -12,7 +11,7 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 
-// ✅ Use routes
+// Use routes
 app.use("/api/auth", authRoutes);
 
 mongoose.connect(process.env.MONGO_URI)

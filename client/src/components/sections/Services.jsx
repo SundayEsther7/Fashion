@@ -5,7 +5,7 @@ import { Link } from "react-router-dom";
 
 export default function Services() {
   return (
-    <SectionWrapper className="py-20">
+    <SectionWrapper className="py-1 m-1 w-full">
       <div className="grid grid-cols-1 md:grid-cols-2 gap-16 items-center max-w-[1240px] mx-auto px-6">
 
         {/* IMAGE with slight hover motion */}

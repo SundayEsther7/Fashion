@@ -3,9 +3,10 @@ import all from "../../assets/all.jpg";
 
 export default function Highlight() {
   return (
-    <SectionWrapper className="relative bg-white py-16 md:py-20 lg:py-[96px] px-6 md:px-12">
+    //Removed padding
+    <SectionWrapper className="relative py-1 m-1"> 
 
-      {/* ✅ Subtle grain texture */}
+      {/* Subtle grain texture */}
       <div className="absolute inset-0 opacity-[0.07] pointer-events-none"
         style={{
           backgroundImage: "url('https://assets.codepen.io/1468070/grain.png')",
@@ -17,7 +18,7 @@ export default function Highlight() {
         {/* LEFT TEXT */}
         <div className="w-full lg:w-[45%] lg:pl-[100px] text-center lg:text-left">
 
-          {/* ✅ Soft muted label */}
+          {/* Soft muted label */}
           <span className="uppercase tracking-[0.15em] text-secondary text-sm font-semibold mb-3 block">
             Street Tested · Rider Approved
           </span>
@@ -28,7 +29,7 @@ export default function Highlight() {
             <span className="text-accent">Made for the Movement.</span>
           </h2>
 
-          {/* ✅ Accent underline */}
+          {/* Accent underline */}
           <div className="w-[60px] h-[4px] bg-accent mx-auto lg:mx-0 mb-8 rounded-full"></div>
 
           <p className="text-[16px] md:text-[18px] leading-[170%] font-saira text-neutralDark/90 max-w-[480px] mx-auto lg:mx-0">
@@ -40,8 +41,8 @@ export default function Highlight() {
         </div>
 
         {/* RIGHT IMAGE */}
-        <div className="w-full lg:w-[50%] flex justify-center lg:justify-end pr-0 lg:pr-[80px]">
-          <div className="w-full max-w-[600px] rounded-[10px] overflow-hidden shadow-[0px_12px_26px_-6px_rgba(0,0,0,0.25)] 
+        <div className="w-full lg:w-[50%] flex justify-center lg:justify-end pr-0 lg:pr-[60px]">
+          <div className="w-full max-w-[500px] rounded-[10px] overflow-hidden shadow-[0px_12px_26px_-6px_rgba(0,0,0,0.25)] 
             border border-neutralLight hover:shadow-[0px_16px_32px_-4px_rgba(0,0,0,0.32)] transition-shadow duration-300">
             <img
               className="w-full h-full object-cover object-center"
