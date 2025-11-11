@@ -66,7 +66,7 @@ export default function CTA() {
             <p className="text-red-300 text-sm mt-2">Please enter a valid email address.</p>
           )}
           {status === "success" && (
-            <p className="text-accent text-sm mt-2 font-semibold">You're in! Check your inbox 🎉</p>
+            <p className="text-accent text-sm mt-2 font-semibold">You're in! Check your inbox</p>
           )}
         </div>
       </div>
