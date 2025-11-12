@@ -67,37 +67,20 @@ export default function Features() {
 
         {/* INFINITE AUTOSCROLL CONTAINER */}
         <div className="w-full overflow-hidden">
-          <div className="flex animate-marquee hover:pause-marquee gap-6">
-            {/* First set */}
-            {products.map((product) => (
+          <div
+            className="flex animate-marquee hover:pause-marquee"
+            aria-label="Featured skate gear items"
+          >
+            {[...products, ...products].map((product, index) => (
               <div
-                key={product.id}
+                key={index}
                 className="relative w-[230px] h-[350px] rounded-xl overflow-hidden flex-shrink-0 
-                  transition-transform duration-500 hover:scale-[1.05] group cursor-pointer"
+                transition-transform duration-500 hover:scale-[1.05] group cursor-pointer mr-6 last:mr-0"
               >
                 <img
                   src={product.image}
                   alt={product.name}
-                  className="w-full h-full object-cover"
-                />
-                <div className="absolute inset-0 bg-gradient-to-b from-transparent to-black/50"></div>
-                <p className="absolute bottom-5 left-1/2 -translate-x-1/2 text-white text-[20px] font-semibold">
-                  {product.name}
-                </p>
-                <div className="absolute inset-0 border-2 border-transparent group-hover:border-accent transition"></div>
-              </div>
-            ))}
-
-            {/* Duplicate set for seamless loop */}
-            {products.map((product) => (
-              <div
-                key={`dup-${product.id}`}
-                className="relative w-[230px] h-[350px] rounded-xl overflow-hidden flex-shrink-0 
-                  transition-transform duration-500 hover:scale-[1.05] group cursor-pointer"
-              >
-                <img
-                  src={product.image}
-                  alt={product.name}
+                  loading="lazy"
                   className="w-full h-full object-cover"
                 />
                 <div className="absolute inset-0 bg-gradient-to-b from-transparent to-black/50"></div>

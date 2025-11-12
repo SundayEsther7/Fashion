@@ -11,23 +11,20 @@ body {
 
 
 @keyframes marquee {
-          0% {
-            transform: translateX(0%);
-          }
-          100% {
-            transform: translateX(-50%);
-          }
-        }
+  0% {
+    transform: translateX(0);
+  }
+  100% {
+    transform: translateX(-50%);
+  }
+}
 
-        .animate-marquee {
-          display: flex;
-          animation: marquee 20s linear infinite;
-        }
+.animate-marquee {
+  display: flex;
+  animation: marquee 18s linear infinite;
+  width: max-content;
+}
 
-        .pause-marquee {
-          animation-play-state: paused;
-        }
-
-        .hover\\:pause-marquee:hover {
-          animation-play-state: paused;
-        }
+.hover\:pause-marquee:hover {
+  animation-play-state: paused;
+}
