@@ -3,7 +3,6 @@ import { useState } from "react";
 import SectionWrapper from "../common/SectionWrapper";
 import ladyF from "../../assets/ladyF.jpg";
 import lady from "../../assets/lady.jpg";
-
 import parentChild from "../../assets/parentChild.jpg";
 import manPosing from "../../assets/manPosing.jpg";
 import manSkating from "../../assets/manSkating.jpg";
@@ -41,7 +40,7 @@ export default function Testimonials() {
   ];
 
   const [currentIndex, setCurrentIndex] = useState(0);
-  const [activeArrow, setActiveArrow] = useState("next"); // "next" is default active
+  const [activeArrow, setActiveArrow] = useState("next");
 
   const next = () => {
     setActiveArrow("next");
@@ -58,10 +57,8 @@ export default function Testimonials() {
   return (
     <SectionWrapper className="relative py-1 m-1 px-6 md:px-12">
       <div className="max-w-[1240px] mx-auto">
-        {/* SLIDER WRAPPER */}
-        <div className="flex flex-col lg:flex-row items-center gap-12 relative overflow-hidden">
-          
-          {/* ANIMATED SLIDER CONTENT */}
+        {/* SLIDER */}
+        <div className="flex flex-col lg:flex-row items-center gap-10 md:gap-12 relative overflow-hidden">
           <div className="w-full overflow-hidden">
             <AnimatePresence mode="wait">
               <motion.div
@@ -70,64 +67,67 @@ export default function Testimonials() {
                 animate={{ opacity: 1, x: 0 }}
                 exit={{ opacity: 0, x: -80 }}
                 transition={{ duration: 0.3 }}
-                className="flex flex-col lg:flex-row items-center gap-12"
+                className="flex flex-col lg:flex-row items-center gap-8 md:gap-12"
               >
-                {/* TEXT */}
+                {/* TEXT SECTION */}
                 <div className="w-full lg:w-1/2">
-                  <h2 className="text-4xl font-bold text-primary mb-4">
+                  <h2 className="text-2xl md:text-4xl font-extrabold text-primary mb-4 md:mb-6 text-center lg:text-left">
                     What People Are Saying
                   </h2>
-                  <div className="flex items-center gap-4 mb-6">
+
+                  {/* Avatar + Name */}
+                  <div className="flex items-center gap-3 md:gap-4 mb-4 md:mb-6 justify-center lg:justify-start">
                     <img
                       src={testimonials[currentIndex].image}
-                      className="w-16 h-16 rounded-full object-cover border-2 border-accent"
+                      alt={`${testimonials[currentIndex].name}'s profile`}
+                      className="w-14 h-14 md:w-16 md:h-16 rounded-full object-cover border-2 border-accent"
+                      loading="lazy"
                     />
                     <div>
-                      <p className="font-semibold text-primary text-xl">
+                      <p className="font-semibold text-primary text-base md:text-lg">
                         {testimonials[currentIndex].name}
                       </p>
-                      <p className="text-sm text-neutralDark/60">
+                      <p className="text-xs md:text-sm text-neutralDark/60">
                         {testimonials[currentIndex].role}
                       </p>
                     </div>
                   </div>
 
-                  {/* THEN THE TEXT */}
-                  <p className="text-neutralDark/80 text-lg leading-relaxed max-w-[500px]">
+                  {/* Testimonial Text */}
+                  <p className="text-neutralDark/80 text-base md:text-lg leading-relaxed max-w-[500px] text-center lg:text-left">
                     {testimonials[currentIndex].text}
                   </p>
                 </div>
 
-                {/* IMAGE */}
-                <div className="w-full lg:w-1/2">
+                {/* IMAGE (hidden on small screens) */}
+                <div className="hidden md:block w-full lg:w-1/2">
                   <img
                     src={testimonials[currentIndex].background}
-                    className="w-full h-[340px] rounded-xl shadow-lg object-cover"
+                    alt={`${testimonials[currentIndex].name}'s skating experience`}
+                    className="w-full h-[320px] rounded-xl shadow-lg object-cover"
+                    loading="lazy"
                   />
                 </div>
               </motion.div>
             </AnimatePresence>
           </div>
         </div>
+
         {/* ARROWS */}
-        <div className="flex gap-4 pt-6">
-          {/* PREV ARROW */}
+        <div className="flex gap-3 md:gap-4 pt-6 justify-center lg:justify-start">
+          {/* Prev */}
           <button
             onClick={prev}
-            className={`
-      w-10 h-10 rounded-full border transition-all active:scale-95 flex items-center justify-center shadow-md
-      ${
-        activeArrow === "prev"
-          ? "bg-accent border-accent"
-          : "bg-white border-primary/20 hover:bg-accent hover:border-accent"
-      }
-    `}
+            className={`w-9 h-9 md:w-10 md:h-10 rounded-full border transition-all active:scale-95 flex items-center justify-center shadow-md
+              ${
+                activeArrow === "prev"
+                  ? "bg-accent border-accent"
+                  : "bg-white border-primary/20 hover:bg-accent hover:border-accent"
+              }`}
             aria-label="Previous testimonial"
           >
             <svg
-              className={`w-6 h-6 transition ${
-                activeArrow === "prev" ? "text-primary" : "text-primary"
-              }`}
+              className="w-5 h-5 md:w-6 md:h-6 text-primary"
               fill="none"
               stroke="currentColor"
               strokeWidth={2.5}
@@ -141,23 +141,19 @@ export default function Testimonials() {
             </svg>
           </button>
 
-          {/* NEXT ARROW */}
+          {/* Next */}
           <button
             onClick={next}
-            className={`
-      w-10 h-10 rounded-full border transition-all active:scale-95 flex items-center justify-center shadow-md
-      ${
-        activeArrow === "next"
-          ? "bg-accent border-accent"
-          : "bg-white border-primary/20 hover:bg-accent hover:border-accent"
-      }
-    `}
+            className={`w-9 h-9 md:w-10 md:h-10 rounded-full border transition-all active:scale-95 flex items-center justify-center shadow-md
+              ${
+                activeArrow === "next"
+                  ? "bg-accent border-accent"
+                  : "bg-white border-primary/20 hover:bg-accent hover:border-accent"
+              }`}
             aria-label="Next testimonial"
           >
             <svg
-              className={`w-6 h-6 transition ${
-                activeArrow === "next" ? "text-primary" : "text-primary"
-              }`}
+              className="w-5 h-5 md:w-6 md:h-6 text-primary"
               fill="none"
               stroke="currentColor"
               strokeWidth={2.5}
