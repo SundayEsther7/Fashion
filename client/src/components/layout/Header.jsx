@@ -3,60 +3,75 @@ import { Link, useLocation } from "react-router-dom";
 import { useAuthStore } from "../../store/auth";
 
 export default function Header() {
-  const [open, setOpen] = useState(false);// to open and close the mobile menu
-  
-const { user, logout } = useAuthStore();// access user and logout function
+  const [open, setOpen] = useState(false);
+  const { user, logout } = useAuthStore();
 
-
-  // Detect the current page route
   const { pathname } = useLocation();
-
-  // If we are on the Home page, header should be transparent.
   const isHome = pathname === "/";
 
   return (
     <header
       className={`
-        fixed top-0 left-0 w-full z-30 px-8 py-4 
+        fixed top-0 left-0 w-full z-30 px-8 py-4
         flex items-center justify-between
         transition-all duration-300
-      
-        /* Transparent on Home, Solid on other pages */
         ${isHome ? "bg-transparent" : "bg-white shadow-md"}
       `}
     >
-      {/* LOGO / BRAND */}
-      {/* Logo is white on Home (overlaying hero) and Primary color on other pages */}
+      {/* LOGO */}
       <h1 className={`text-2xl font-extrabold ${isHome ? "text-white" : "text-primary"}`}>
         UrbanGlide
       </h1>
 
       {/* DESKTOP NAVIGATION */}
-      {/* Text color also depends on whether we are on the Hero or not */}
-      <nav className={`hidden md:flex gap-8 text-sm ${isHome ? "text-white" : "text-primary"}`}>
-        <Link to="/" className="hover:text-accent transition">Home</Link>
-        <Link to="/shop" className="hover:text-accent transition">Shop</Link>
-        <Link to="/about" className="hover:text-accent transition">About</Link>
-        <Link to="/contact" className="hover:text-accent transition">Contact</Link>
-      
-      
-      {/* Login/Logout */}
-      {/* {user ? (
-    <button onClick={logout} className="hover:text-accent transition">
-      Logout
-    </button>
-  ) : (
-    <Link to="/login" className="hover:text-accent transition">
-      Login
-    </Link>
-  )} */}
-     
-      </nav>
+<nav
+  className={`hidden md:flex gap-8 text-base font-saira ${
+    isHome ? "text-white" : "text-primary"
+  }`}
+>
+  <Link
+    to="/"
+    className={`hover:text-accent transition ${
+      pathname === "/" ? "font-bold" : "font-medium"
+    }`}
+  >
+    Home
+  </Link>
 
-      {/* MOBILE MENU TOGGLE BUTTON (Hamburger) */}
+  <Link
+    to="/shop"
+    className={`hover:text-accent transition ${
+      pathname === "/shop" ? "font-bold" : "font-medium"
+    }`}
+  >
+    Shop
+  </Link>
+
+  <Link
+    to="/about"
+    className={`hover:text-accent transition ${
+      pathname === "/about" ? "font-bold" : "font-medium"
+    }`}
+  >
+    About
+  </Link>
+
+  <Link
+    to="/contact"
+    className={`hover:text-accent transition ${
+      pathname === "/contact" ? "font-bold" : "font-medium"
+    }`}
+  >
+    Contact
+  </Link>
+</nav>
+
+
+      {/* MOBILE MENU BUTTON */}
       <button
         onClick={() => setOpen(!open)}
         className={`${isHome ? "text-white" : "text-primary"} md:hidden`}
+        aria-label="Toggle menu"
       >
         <svg className="w-7 h-7" fill="none" stroke="currentColor" strokeWidth="2"
           viewBox="0 0 24 24" strokeLinecap="round" strokeLinejoin="round">
@@ -64,70 +79,41 @@ const { user, logout } = useAuthStore();// access user and logout function
         </svg>
       </button>
 
-      {/* MOBILE NAVIGATION MENU */}
+      {/* MOBILE MENU */}
       {open && (
         <div
           className={`
             md:hidden w-full absolute top-full left-0 text-center py-4 space-y-4
-
-            /* Background + Text style switches depending on page */
             ${isHome ? "bg-black/70 text-white" : "bg-white text-primary shadow-md"}
           `}
         >
-          <Link to="/" onClick={() => setOpen(false)} className="block hover:text-accent transition">Home</Link>
-          <Link to="/shop" onClick={() => setOpen(false)} className="block hover:text-accent transition">Shop</Link>
-          <Link to="/about" onClick={() => setOpen(false)} className="block hover:text-accent transition">About</Link>
-          <Link to="/contact" onClick={() => setOpen(false)} className="block hover:text-accent transition">Contact</Link>
-        
-        {user ? (
-  <>
-    <span className="block font-semibold py-2">Hi, {user.name}</span>
-    <button
-      onClick={() => { logout(); setOpen(false); }}
-      className="block text-accent hover:underline mx-auto"
-    >
-      Logout
-    </button>
-  </>
-) : (
-  <>
-    <Link to="/register" onClick={() => setOpen(false)} className="block hover:text-accent">
-      Get Started
-    </Link>
-  </>
-)}
+          <Link to="/" onClick={() => setOpen(false)} className="block hover:text-accent">Home</Link>
+          <Link to="/shop" onClick={() => setOpen(false)} className="block hover:text-accent">Shop</Link>
+          <Link to="/about" onClick={() => setOpen(false)} className="block hover:text-accent">About</Link>
+          <Link to="/contact" onClick={() => setOpen(false)} className="block hover:text-accent">Contact</Link>
 
+          {/* Mobile Only Auth */}
+          {user ? (
+            <>
+              <span className="block font-semibold py-1">Hi, {user.name}</span>
+              <button
+                onClick={() => { logout(); setOpen(false); }}
+                className="block text-accent hover:underline"
+              >
+                Logout
+              </button>
+            </>
+          ) : (
+            <Link
+              to="/register"
+              onClick={() => setOpen(false)}
+              className="block text-accent hover:text-accent/80 font-semibold"
+            >
+              Get Started
+            </Link>
+          )}
         </div>
       )}
-
-      {/* For now this is hidden to maintain the layout */}
-
-
-
-      
-      {/* AUTH BUTTONS (RIGHT SIDE) */}
-{/* <div className="hidden md:flex items-center gap-6">
-  {user ? (
-    <>
-      <span className={`${isHome ? "text-white" : "text-primary"} font-semibold`}>
-        Hi, {user.name}
-      </span>
-      <button
-        onClick={logout}
-        className="text-accent hover:underline"
-      >
-        Logout
-      </button>
-    </>
-  ) : (
-    
-    
-      <Link to="/register" className="bg-accent text-white px-4 py-2 rounded hover:bg-accent/80 transition">
-       Get Started
-      </Link>
-  )}
-</div> */}
-
     </header>
   );
 }
