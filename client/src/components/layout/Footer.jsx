@@ -12,31 +12,35 @@ export default function Footer() {
       <div className="max-w-[1240px] mx-auto">
 
         {/* Top: Logo + Social */}
-        <div className="flex flex-col md:flex-row justify-between items-center mb-12">
+        <div className="flex flex-col md:flex-row justify-between items-center mb-10">
           <h2 className="text-3xl font-extrabold tracking-tight">UrbanGlide</h2>
 
+          {/* Social icons */}
           <div className="flex gap-4 mt-4 md:mt-0">
-  {[FaFacebookF, FaTwitter, FaInstagram, FaLinkedinIn].map((Icon, i) => (
-    <div
-      key={i}
-      className="
-        w-10 h-10 flex items-center justify-center rounded-full
-        bg-white/10 text-white
-        transition-all duration-500 ease-in-out cursor-pointer
-        hover:bg-accent hover:shadow-[0_0_15px_#286F6C]
-        hover:scale-125 hover:rotate-[360deg]
-      "
-    >
-      <Icon className="text-lg" />
-    </div>
-  ))}
-</div>
-
+            {[FaFacebookF, FaTwitter, FaInstagram, FaLinkedinIn].map((Icon, i) => (
+              <a
+                key={i}
+                href="#"
+                aria-label={`Visit our ${Icon.name.replace("Fa", "")}`}
+                className="
+                  w-10 h-10 flex items-center justify-center rounded-full
+                  bg-white/10 text-white
+                  transition-all duration-500 ease-in-out cursor-pointer
+                  hover:bg-accent hover:shadow-[0_0_15px_#286F6C]
+                  hover:scale-125 hover:rotate-[360deg]
+                "
+              >
+                <Icon className="text-lg" />
+              </a>
+            ))}
+          </div>
         </div>
+
+        {/* NEW Divider line under socials */}
+        <div className="w-full border-t-2 border-white/30 mb-10"></div>
 
         {/* Middle: Links */}
         <div className="grid grid-cols-2 md:grid-cols-4 gap-10 mb-14">
-
           <div>
             <h3 className="font-semibold text-lg mb-4">Shop</h3>
             <ul className="space-y-2 opacity-80 text-sm">
@@ -76,11 +80,10 @@ export default function Footer() {
               <li>Press & Media</li>
             </ul>
           </div>
-
         </div>
 
         {/* Bottom */}
-        <div className="border-t border-neutralLight/30 pt-8 text-center text-sm opacity-70">
+        <div className="pt-8 text-center text-sm opacity-70">
           © {new Date().getFullYear()} UrbanGlide — Ride Different.
         </div>
       </div>
