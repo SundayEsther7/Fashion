@@ -1,4 +1,4 @@
-import skate1 from "../../assets/skate1.jpg";
+import skaters7 from "../../assets/skaters7.jpg";
 import SectionWrapper from "../common/SectionWrapper";
 import { motion } from "framer-motion";
 import { Link } from "react-router-dom";
@@ -9,10 +9,10 @@ export default function Hero() {
       <section
         aria-label="Hero section showcasing UrbanGlide skater background"
         className="relative min-h-[90vh] md:h-[100vh] max-h-[1000px] flex flex-col items-center justify-center text-center bg-cover bg-center pb-[120px] md:pb-[140px]"
-        style={{ backgroundImage: `url(${skate1})` }}
+        style={{ backgroundImage: `url(${skaters7})` }}
       >
         {/* Dark overlay */}
-        <div className="absolute inset-0 bg-black/50"></div>
+        <div className="absolute inset-0 bg-black/60"></div>
 
         {/* White gradient at bottom */}
         <div className="absolute inset-x-0 bottom-0 h-16 bg-gradient-to-t from-white to-transparent pointer-events-none"></div>

@@ -75,6 +75,8 @@ export default function Pagination({
         </svg>
       </button>
 
+      
+
     </div>
   );
 }

@@ -33,14 +33,15 @@ import accessory1 from "../../assets/accessory1.jpg";
 import skates from "../../assets/skates.jpg";
 import bag2 from "../../assets/bag2.jpg";
 import buckleStrap from "../../assets/buckleStrap.jpg";
+import new9 from "../../assets/new9.jpg";
 
 export default function AllProducts() {
-  //  Sample product data
+  //  Product data
   const products = [
    
  {
       name: "Adult Inline Skates",
-      image: skate7,
+      image: new9,
       price: "KES8000.00",
       oldPrice: "KES10000.00",
     },
@@ -238,39 +239,49 @@ export default function AllProducts() {
   const itemsPerPage = 8; // products per page
 
   //2. calculate visible products
-  const start = (currentPage - 1) * itemsPerPage; // starting index
-  const end = start + itemsPerPage; // ending index
-  const visibleProducts = products.slice(start, end); // products for current page
+  const start = (currentPage - 1) * itemsPerPage; 
+  const end = start + itemsPerPage; 
+  const visibleProducts = products.slice(start, end); 
 
-  //3. render
+  
   return (
-    //Removed padding
-    <SectionWrapper className="relative py-1 m-1 ">
+    <SectionWrapper className="relative py-1 m-1">
       {/* Header */}
       <div className="hover:scale-105 transition-transform duration-300 p-2 shadow-sm relative rounded-[16px] border-[rgba(16,38,55,0.1)] text-center border w-full max-w-[600px] mx-auto mb-12">
         <h2 className="text-[40px] font-semibold text-[#23262F]">
-          All Products
+          Street-Ready Gear
         </h2>
         <p className="text-[16px] text-[#23262F] opacity-80 mt-3 leading-relaxed">
-          Explore our full lineup of gear—curated for performance, comfort and a
-        look that never blends in.
+          Explore gear made to move — designed for performance, comfort, and style
+          that stands out wherever you ride.
         </p>
       </div>
 
       {/* Cards grid */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8 max-w-[1240px] mx-auto px-4">
+      <div
+        className="
+          grid 
+          grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 
+          gap-6 sm:gap-8 
+          max-w-[1240px] mx-auto 
+          px-4
+          place-items-center
+        "
+      >
         {visibleProducts.map((product, index) => (
           <Card key={index} {...product} />
         ))}
       </div>
 
-      {/* Pagination component */}
-      <Pagination
-        totalItems={products.length} // total products
-        itemsPerPage={itemsPerPage} // products per page
-        currentPage={currentPage} // current active page
-        onPageChange={setCurrentPage} // updates parent state
-      />
+      {/* Pagination only for md+ screens */}
+      <div className="hidden md:block">
+        <Pagination
+          totalItems={products.length}
+          itemsPerPage={itemsPerPage}
+          currentPage={currentPage}
+          onPageChange={setCurrentPage}
+        />
+      </div>
     </SectionWrapper>
   );
 }
