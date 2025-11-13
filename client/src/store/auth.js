@@ -26,15 +26,3 @@ export const useAuthStore = create((set) => ({
   },
 }));
 
-/*localStorage persists data until the user logs out or clears it.
-When deployed:
-
-The React app runs in the user's browser (same as localhost)
-
-localStorage still exists
-
-The data is stored inside the user's own browser, not your server
-
-So nothing changes in deployment — it works the exact same way.
-we may switch to httpOnly cookies which are more secure
-*/

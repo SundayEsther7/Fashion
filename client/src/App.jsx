@@ -9,14 +9,16 @@ import About from "./pages/About";
 import Contact from "./pages/Contact";
 import Login from "./pages/Login";
 import Register from "./pages/Register";
+import VerifyEmail from "./pages/VerifyEmail";
 import Dashboard from "./pages/Dashboard";
 import Profile from "./pages/Profile";
+import ProtectedRoute from "./components/common/ProtectedRoute";
 
 export default function App() {
   return (
     <Router>
       <Header />
-      
+
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/shop" element={<Shop />} />
@@ -26,8 +28,12 @@ export default function App() {
         {/* Auth Pages */}
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register />} />
-        <Route path="/dashboard" element={<Dashboard />} />
-        <Route path="/profile" element={<Profile />} />
+        <Route path="/verify-email" element={<VerifyEmail />} />
+
+        {/* Protected Pages */}
+        <Route path="/dashboard" element={<ProtectedRoute>  <Dashboard /> </ProtectedRoute> }/>
+        <Route path="/profile" element={ <ProtectedRoute>  <Profile /> </ProtectedRoute> } />
+     
       </Routes>
 
       <Footer />
