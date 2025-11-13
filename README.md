@@ -1,79 +1,161 @@
-# React + Tailwind E-Commerce Website (Figma Recreation)
+# UrbanGlide #
+Live Demo
 
-## Overview
-This project is a **pixel-perfect recreation**(somewhat) of an e-commerce website design provided in Figma for my final project.  
-The goal is to **replicate the original layout, spacing, and responsiveness** using **React (Vite)** and **Tailwind CSS**, ensuring the layout matches the provided design precisely.
+https://urbanglide.render.app 
 
-At this stage, I’m focused on rebuilding the exact UI to match the Figma reference.  
-Once the structure and responsiveness are complete, I will **develop my own unique brand identity** — including a new color system, logo, and brand story — once I settle on my creative inspiration.
+## Project Overview ##
 
----
+UrbanGlide is a responsive, full-stack e-commerce platform for the skating community.
+It blends street culture and modern web design, allowing users to explore, purchase, and connect around skating gear.
+The app includes full authentication (signup, login, email verification), smooth UI transitions, and optimized performance for all devices.
 
-## Tech Stack
-- React (Vite)
-- Tailwind CSS
-- PostCSS & Autoprefixer
+## Brand Identity ##
+ ### Color System ###
+Purpose	Color	Hex	Rationale
+Primary (Background/UI Base)	Dark Teal	#013A38	Represents balance, control, and flow—core themes of skating.
+Secondary (Buttons, Highlights)	Navy Blue	#011F3A	Provides contrast and adds depth to CTAs.
+Accent	Vibrant Green	#286F6C	Adds energy and visual rhythm—echoes the active skating lifestyle.
+Neutral Dark	Slate Gray	#23262F	Used for text and secondary details for readability.
+White	#FFFFFF	Maintains contrast and visual clarity.	
+#### Typography ####
 
----
+Font Family: Saira
 
-##  Project Goals
-- Achieve pixel-perfect layout accuracy from the provided Figma.
-- Implement responsive design for all major breakpoints (SM, MD, LG).
-- Later, rebrand and customize content with a unique creative theme.
+Headings: Bold weights (700–900) — clean and impactful for energy and motion.
 
----
+Body: Regular to Medium (400–500) — simple, modern readability across devices.
 
-##  Folder Structure
+### Design Decisions ###
+#### Layout Adherence ####
+
+Frame size followed 402×847px (iPhone 16 Pro) for mobile-first design.
+
+Desktop grid based on max width 1240px, consistent with responsive scaling.
+
+Spacing and hierarchy derived directly from the provided LG (desktop) design and scaled down precisely for MD and SM breakpoints using Tailwind’s responsive utilities.
+
+## Creative Departures ##
+
+Reimagined hero section with motivational copy and richer storytelling to align with brand emotion.
+
+Designed a testimonials carousel using Framer Motion for personality and authenticity.
+
+Introduced a newsletter CTA and dynamic product cards for engagement.
+
+MD breakpoint interpreted creatively to maintain design flow without overcrowding content.
+
+## Component Architecture ##
+
+UrbanGlide follows a modular component structure:
+
+urbanglide/<br>
+│<br>
+├── frontend/               # React + Vite + Tailwind (client)<br>
+│   ├── public/<br>
+│   ├── src/<br>
+│   │   ├── assets/         # Images (optimized, WebP/JPEG)<br>
+│   │   ├── components/<br>
+│   │   ├── pages/<br>
+│   │   ├── store/          # Zustand<br>
+│   │   ├── utils/<br>
+│   │   ├── App.jsx<br>
+│   │   └── main.jsx<br>
+│   ├── package.json<br>
+│   └── vite.config.js<br>
+│<br>
+├── backend/                # Node + Express + MongoDB server<br>
+│   ├── models/<br>
+│   │   └── User.js<br>
+│   ├── routes/<br>
+│   │   └── authRoutes.js<br>
+│   ├── utils/<br>
+│   │   └── email.js        # Nodemailer config & sendEmail()<br>
+│   ├── middleware/<br>
+│   ├── server.js           # Main server entry point<br>
+│   ├── .env                # environment variables<br>
+|   ├──packagelock.json<br>
+│   └── package.json<br>
+│<br>
+├── README.md<br>
+└── .gitignore<br>
+<br>
 
 
-src/<br />
-├── assets/<br />
-│ └── images/<br />
-├── components/<br />
-│ ├── common/<br />
-│ │ ├── Button.jsx<br />
-│ │ ├── Card.jsx<br />
-│ │ └── SectionWrapper.jsx<br />
-│ ├── layout/<br />
-│ │ ├── Header.jsx<br />
-│ │ ├── Footer.jsx<br />
-│ │ └── Navigation.jsx<br />
-│ └── sections/<br />
-│ ├── Hero.jsx<br />
-│ ├── Services.jsx<br />
-│ ├── Featured.jsx<br />
-│ └── [other sections].jsx<br />
-├── App.jsx<br />
-└── main.jsx<br />
+Principles:
+
+Components are atomic and reusable.
+
+Layouts maintain semantic structure and accessibility.
+
+State management centralized via Zustand.
+
+## Performance Optimizations ##
+
+* Lazy Loading for images and routes
+* React.memo used on performance-heavy components (Cards, Pagination)
+* Semantic HTML for accessibility and SEO
+* Keyboard navigation supported
+* Image optimization: All images converted to WebP / compressed JPEG (≥800x600 for cards, ≥1920x1080 for hero)
+
+## Image Credits ##
+
+All images sourced from Pexels, wikimedia commons and Unsplash for non-commercial use.
+
+Skateboarding imagery by Pexels
+
+Urban and community scenes by Wikimedia Commons
 
 
----
+## Technologies Used ##
 
-## Installation & Setup
-1. **Clone the repository**
-   ```bash
-   git clone https://github.com/7sundayesther/my-project.git
+React 18+
 
+Vite
 
-Install dependencies
+Tailwind CSS 3+
 
-npm install
+Framer Motion
 
+Zustand (state management)
 
-Start the development server
+Express.js + Node.js
 
-npm run dev
+MongoDB + Mongoose
 
+JWT Authentication
 
-View it in your browser
+Nodemailer (email verification)
 
-http://localhost:5173/
+Vercel / Render (deployment)
 
-# Live Demo
+## Challenges & Solutions ##
 
-[Coming soon — will be deployed on Vercel or Netlify]
+Email Verification Flow
 
-# Status
+Challenge: Implementing a secure verification system.
 
-Layout recreation in progress
- Branding, imagery, and color customization to follow once final concept is chosen
+Solution: Generated 6-digit codes with expiry using Node.js + crypto and delivered via Nodemailer.
+
+Responsive Layout Scaling
+
+Challenge: Maintaining consistent typography and spacing across SM, MD, and LG.
+
+Solution: Used Tailwind’s custom breakpoints and container max-width for uniform visual rhythm.
+
+Performance Optimization
+
+Challenge: Slow image loads reducing Lighthouse scores.
+
+Solution: Converted large images to WebP and implemented lazy loading.
+
+## Future Improvements ##
+
+* Stripe checkout
+
+* User dashboards
+
+* Product reviews
+
+* Cart persistence
+
+* Admin panel
