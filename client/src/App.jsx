@@ -1,4 +1,8 @@
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import ProtectedRoute from "./auth/Protectedroute";
+import PublicRoute from "./auth/PublicRoute";
+
+// Layout
 import Header from "./components/layout/Header";
 import Footer from "./components/layout/Footer";
 
@@ -12,7 +16,6 @@ import Register from "./pages/Register";
 import VerifyEmail from "./pages/VerifyEmail";
 import Dashboard from "./pages/Dashboard";
 import Profile from "./pages/Profile";
-import ProtectedRoute from "./components/common/ProtectedRoute";
 
 export default function App() {
   return (
@@ -20,20 +23,20 @@ export default function App() {
       <Header />
 
       <Routes>
+        {/* Public pages */}
         <Route path="/" element={<Home />} />
         <Route path="/shop" element={<Shop />} />
         <Route path="/about" element={<About />} />
         <Route path="/contact" element={<Contact />} />
 
-        {/* Auth Pages */}
-        <Route path="/login" element={<Login />} />
-        <Route path="/register" element={<Register />} />
-        <Route path="/verify-email" element={<VerifyEmail />} />
+        {/* Auth pages */}
+        <Route path="/login" element={<PublicRoute><Login /></PublicRoute>} />
+        <Route path="/register" element={<PublicRoute><Register /></PublicRoute>} />
+        <Route path="/verify-email" element={<PublicRoute><VerifyEmail /></PublicRoute>} />
 
-        {/* Protected Pages */}
-        <Route path="/dashboard" element={<ProtectedRoute>  <Dashboard /> </ProtectedRoute> }/>
-        <Route path="/profile" element={ <ProtectedRoute>  <Profile /> </ProtectedRoute> } />
-     
+        {/* Protected pages */}
+        <Route path="/dashboard" element={<ProtectedRoute><Dashboard /></ProtectedRoute>} />
+        <Route path="/profile" element={<ProtectedRoute><Profile /></ProtectedRoute>} />
       </Routes>
 
       <Footer />

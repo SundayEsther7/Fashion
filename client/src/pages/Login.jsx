@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useContext } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { useAuthStore } from "../store/auth.js";
 
@@ -29,10 +29,18 @@ export default function Login() {
       console.log(data);
 
       if (response.ok) {
-        loginUser(data.user, data.token);
+        if (!data.user.isVerified) {
+          // User exists but email not verified yet
+          loginUser(data.user, data.token);
+
+          return navigate(`/verify-email?email=${data.user.email}`);
+        }
+
+        // User is verified → normal login
+        useAuthStore.getState().login(data.user, data.token);
         navigate("/dashboard");
       } else {
-        setError(data.message || "Invalid email or password.");
+        toast.error(data.message);
       }
     } catch {
       setError("Network error. Please try again.");
@@ -107,7 +115,10 @@ export default function Login() {
         {/* Footer */}
         <p className="text-center text-sm text-primary/80 mt-4">
           Don’t have an account?{" "}
-          <Link className="text-accent hover:underline font-medium" to="/register">
+          <Link
+            className="text-accent hover:underline font-medium"
+            to="/register"
+          >
             Register
           </Link>
         </p>

@@ -4,7 +4,11 @@ import toast, { Toaster } from "react-hot-toast";
 
 export default function Register() {
   const navigate = useNavigate();
-  const [formData, setFormData] = useState({ name: "", email: "", password: "" });
+  const [formData, setFormData] = useState({
+    name: "",
+    email: "",
+    password: "",
+  });
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
 
@@ -13,33 +17,40 @@ export default function Register() {
   };
 
   const handleSubmit = async (e) => {
-    e.preventDefault();
-    setError("");
-    setLoading(true);
+  e.preventDefault();
+  setError("");
 
+  try {
+    const response = await fetch("http://localhost:5000/api/auth/register", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(formData),
+    });
+
+    // Try safely parsing JSON
+    let data = {};
     try {
-      const response = await fetch("http://localhost:5000/api/auth/register", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(formData),
-      });
-
-      const data = await response.json();
-
-      if (response.ok) {
-        toast.success("Account created! Please verify your email.");
-        navigate("/verify-email", { state: { email: formData.email } });
-      } else {
-        toast.error(data.message || "Something went wrong. Try again.");
-        setError(data.message || "Something went wrong. Try again.");
-      }
+      data = await response.json();
     } catch {
-      toast.error("Network error. Please check your connection.");
-      setError("Network error. Please check your connection.");
-    } finally {
-      setLoading(false);
+      throw new Error("Invalid JSON from server");
     }
-  };
+
+ if (response.ok) {
+  // Store user (unverified) in localStorage for redirect protection
+  localStorage.setItem("user", JSON.stringify({ email: formData.email, isVerified: false }));
+  
+  // You can navigate directly to verification
+  navigate(`/verify-email?email=${encodeURIComponent(formData.email)}`);
+} else {
+  setError(data.message || "Something went wrong. Try again.");
+}
+  } catch (err) {
+    console.error("Register error:", err);
+    setError("Network error. Please check your connection.");
+    toast.error("Network error. Please check your connection.");
+  }
+};
+
 
   return (
     <section

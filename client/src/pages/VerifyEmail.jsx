@@ -1,21 +1,23 @@
 import { useState, useEffect } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
-import toast, { Toaster } from "react-hot-toast";
+import { toast, Toaster } from "react-hot-toast";
+import { useAuthStore } from "../store/auth";
 
 export default function VerifyEmail() {
   const navigate = useNavigate();
   const location = useLocation();
+  const user = useAuthStore((s) => s.user);
+  const login = useAuthStore((s) => s.login);
 
-  // Extract email from query (or pass via state)
+  // Extract email from URL or localStorage
   const params = new URLSearchParams(location.search);
-  const userEmail = params.get("email");
+  const userEmail =
+    params.get("email") || localStorage.getItem("verifyEmail") || "";
 
-  const [email, setEmail] = useState(userEmail || "");
+  const [email, setEmail] = useState(userEmail);
   const [code, setCode] = useState("");
-  const [status, setStatus] = useState(null); // "success" | "error" | null
+  const [status, setStatus] = useState(null);
   const [message, setMessage] = useState("");
-
-  // Timer states
   const [coolDown, setCoolDown] = useState(0);
   const [canResend, setCanResend] = useState(true);
 
@@ -30,6 +32,14 @@ export default function VerifyEmail() {
     return () => clearTimeout(timer);
   }, [coolDown]);
 
+  useEffect(() => {
+    if (!email) {
+      setMessage(
+        "Your verification link is missing or expired. Please click the link we sent to your email."
+      );
+    }
+  }, [email]);
+
   const handleVerify = async (e) => {
     e.preventDefault();
 
@@ -43,16 +53,22 @@ export default function VerifyEmail() {
       const data = await res.json();
 
       if (res.ok) {
-        setStatus("success");
-        setMessage("Your account has been verified! Redirecting...");
-        setTimeout(() => navigate("/login"), 2000);
+        toast.success("Your account has been verified!");
+
+        // Update Zustand
+        const updatedUser = { ...user, isVerified: true };
+        const token = localStorage.getItem("token");
+
+        login(updatedUser, token);
+        localStorage.setItem("user", JSON.stringify(updatedUser));
+
+        // Redirect to dashboard
+        setTimeout(() => navigate("/dashboard"), 1200);
       } else {
-        setStatus("error");
-        setMessage(data.message || "Invalid code. Try again.");
+        toast.error(data.message || "Invalid code. Try again.");
       }
     } catch (err) {
-      setStatus("error");
-      setMessage("Server error. Try again later.");
+      toast.error("Server error. Try again later.");
     }
   };
 
@@ -68,29 +84,28 @@ export default function VerifyEmail() {
 
       const data = await res.json();
       if (res.ok) {
-        setStatus("success");
-        setMessage("New code sent! Check your email.");
+        toast.success("New code sent! Check your email.");
         setCanResend(false);
-        setCoolDown(60); // 60s coolDown
+        setCoolDown(60);
       } else {
-        setStatus("error");
-        setMessage(data.message || "Unable to resend code.");
+        toast.error(data.message || "Unable to resend code.");
       }
     } catch (err) {
-      setStatus("error");
-      setMessage("Error sending new code.");
+      toast.error("Error sending new code.");
     }
   };
 
   return (
     <section className="min-h-screen flex items-center justify-center bg-neutralLight px-4">
+      <Toaster position="top-center" />
       <div className="bg-white/10 backdrop-blur-lg border border-white/20 shadow-xl p-10 rounded-2xl max-w-md w-full">
         <h1 className="text-3xl font-extrabold text-center text-primary mb-6">
           Verify Your Email
         </h1>
 
         <p className="text-center text-primary/80 mb-6">
-          Enter the 6-digit code sent to <span className="font-semibold">{email}</span>
+          Enter the 6-digit code sent to{" "}
+          <span className="font-semibold">{email}</span>
         </p>
 
         <form onSubmit={handleVerify} className="space-y-5 text-primary">
@@ -112,17 +127,6 @@ export default function VerifyEmail() {
           </button>
         </form>
 
-        {message && (
-          <p
-            className={`mt-4 text-center font-medium ${
-              status === "success" ? "text-green-600" : "text-red-500"
-            }`}
-          >
-            {message}
-          </p>
-        )}
-
-        {/* Resend Section */}
         <div className="text-center mt-6">
           {canResend ? (
             <button
@@ -133,7 +137,8 @@ export default function VerifyEmail() {
             </button>
           ) : (
             <p className="text-sm text-primary/70">
-              Resend available in <span className="font-semibold">{coolDown}s</span>
+              Resend available in{" "}
+              <span className="font-semibold">{coolDown}s</span>
             </p>
           )}
         </div>
