@@ -4,88 +4,113 @@ import { useAuthStore } from "../store/auth.js";
 
 export default function Login() {
   const navigate = useNavigate();
-  
-const loginUser = useAuthStore((state) => state.login);
-  const login = useAuthStore((state) => state.login); // access login function
+  const loginUser = useAuthStore((state) => state.login);
   const [formData, setFormData] = useState({ email: "", password: "" });
+  const [error, setError] = useState("");
 
-/**
- * Handles changes to the form data by updating the state with the new value.
- * @param {Object} e - The event object from the form input.
- * @returns {void}
- */
+  // Handle input change
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
-/**
- * Handles the form submission by sending the form data to the backend
- * and checking if the response was successful.
- * If the response was successful, it logs the user in and navigates to the dashboard.
- * @param {Object} e - The event object from the form submission.
- * @returns {void}
- */
+  // Handle form submit
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setError("");
 
-    const response = await fetch("http://localhost:5000/api/auth/login", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(formData),
-    });
+    try {
+      const response = await fetch("http://localhost:5000/api/auth/login", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(formData),
+      });
 
-    const data = await response.json();
-    console.log(data);
+      const data = await response.json();
+      console.log(data);
 
-    if (response.ok) {
-      loginUser(data.user, data.token); // store user and token
-      navigate("/dashboard"); // navigate to dashboard
+      if (response.ok) {
+        loginUser(data.user, data.token);
+        navigate("/dashboard");
+      } else {
+        setError(data.message || "Invalid email or password.");
+      }
+    } catch {
+      setError("Network error. Please try again.");
     }
   };
 
   return (
-    <section className="min-h-[100vh] flex items-center justify-center bg-neutralLight px-4">
-      <div className="bg-white/10 backdrop-blur-lg border border-white/20 shadow-xl p-10 rounded-2xl max-w-md w-full">
-
-        <h1 className="text-3xl font-extrabold text-center text-primary mb-6">
+    <section
+      className="min-h-[100vh] flex items-center justify-center bg-neutralLight px-4"
+      aria-labelledby="login-heading"
+    >
+      <div
+        className="bg-white/10 backdrop-blur-lg border border-white/20 shadow-xl p-8 sm:p-10 rounded-2xl max-w-md w-full"
+        role="form"
+      >
+        {/* Header */}
+        <h1
+          id="login-heading"
+          className="text-3xl font-extrabold text-center text-primary mb-6"
+        >
           Welcome Back
         </h1>
 
+        {/* Form */}
         <form onSubmit={handleSubmit} className="space-y-5 text-primary">
+          {/* Email */}
+          <div>
+            <label htmlFor="email" className="sr-only">
+              Email Address
+            </label>
+            <input
+              id="email"
+              type="email"
+              name="email"
+              placeholder="Email Address"
+              onChange={handleChange}
+              required
+              className="w-full px-4 py-3 rounded-lg bg-white text-neutralDark placeholder-primary/60 focus:ring-2 focus:ring-accent focus:outline-none transition"
+            />
+          </div>
 
-          <input
-            type="email"
-            name="email"
-            placeholder="Email Address"
-            onChange={handleChange}
-            className="w-full px-4 py-3 rounded-lg bg-white outline-none placeholder-primary/60"
-            required
-          />
+          {/* Password */}
+          <div>
+            <label htmlFor="password" className="sr-only">
+              Password
+            </label>
+            <input
+              id="password"
+              type="password"
+              name="password"
+              placeholder="Password"
+              onChange={handleChange}
+              required
+              className="w-full px-4 py-3 rounded-lg bg-white text-neutralDark placeholder-primary/60 focus:ring-2 focus:ring-accent focus:outline-none transition"
+            />
+          </div>
 
-          <input
-            type="password"
-            name="password"
-            placeholder="Password"
-            onChange={handleChange}
-            className="w-full px-4 py-3 rounded-lg bg-white outline-none placeholder-primary/60"
-            required
-          />
+          {/* Error Message */}
+          {error && (
+            <p className="text-red-500 text-sm mt-1 text-center">{error}</p>
+          )}
 
+          {/* Button */}
           <button
             type="submit"
-            className="w-full py-3 rounded-lg bg-accent text-primary font-semibold hover:bg-accent/80 transition"
+            className="w-full py-3 rounded-lg bg-accent text-neutralDark font-semibold hover:bg-accent/80 transition focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-accent"
           >
             Login
           </button>
         </form>
 
+        {/* Footer */}
         <p className="text-center text-sm text-primary/80 mt-4">
           Don’t have an account?{" "}
-          <Link className="text-accent hover:underline" to="/register">
+          <Link className="text-accent hover:underline font-medium" to="/register">
             Register
           </Link>
         </p>
-
       </div>
     </section>
   );
