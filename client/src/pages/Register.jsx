@@ -4,11 +4,7 @@ import toast, { Toaster } from "react-hot-toast";
 
 export default function Register() {
   const navigate = useNavigate();
-  const [formData, setFormData] = useState({
-    name: "",
-    email: "",
-    password: "",
-  });
+  const [formData, setFormData] = useState({ name: "", email: "", password: "" });
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
   const API = import.meta.env.VITE_API_URL;
@@ -20,31 +16,26 @@ export default function Register() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     setError("");
+    setLoading(true);
 
     try {
-      const response = await fetch(`${API}/api/auth/register`, {
+      const res = await fetch(`${API}/api/auth/register`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(formData),
       });
 
-      // Try safely parsing JSON
-      let data = {};
-      try {
-        data = await response.json();
-      } catch {
-        throw new Error("Invalid JSON from server");
-      }
+      const data = await res.json();
 
-      if (response.ok) {
-        // Store user (unverified) in localStorage for redirect protection
+      if (res.ok) {
+        // Store email in localStorage to use for verification
         localStorage.setItem(
-          "user",
-          JSON.stringify({ email: formData.email, isVerified: false })
+          "verifyEmail",
+          JSON.stringify(data.user.email || formData.email)
         );
 
-        // You can navigate directly to verification
-        navigate(`/verify-email?email=${encodeURIComponent(formData.email)}`);
+        toast.success("Account created! Check your email to verify.");
+        navigate(`/verify-email?email=${encodeURIComponent(data.user.email || formData.email)}`);
       } else {
         setError(data.message || "Something went wrong. Try again.");
       }
@@ -52,70 +43,53 @@ export default function Register() {
       console.error("Register error:", err);
       setError("Network error. Please check your connection.");
       toast.error("Network error. Please check your connection.");
+    } finally {
+      setLoading(false);
     }
   };
 
+  // Get email from localStorage for footer link
+  const storedEmail = JSON.parse(localStorage.getItem("verifyEmail")) || "";
+
   return (
-    <section
-      className="min-h-[100vh] flex items-center justify-center bg-neutralLight px-4"
-      aria-labelledby="register-heading"
-    >
-      {/* Toaster must be included once in your app root (or here locally) */}
+    <section className="min-h-[100vh] flex items-center justify-center bg-neutralLight px-4">
       <Toaster position="top-center" reverseOrder={false} />
 
-      <div
-        className="bg-white/10 backdrop-blur-lg border border-white/20 shadow-xl p-8 sm:p-10 rounded-2xl max-w-md w-full"
-        role="form"
-      >
-        {/* Heading */}
-        <h1
-          id="register-heading"
-          className="text-3xl font-extrabold text-center text-primary mb-6"
-        >
+      <div className="bg-white/10 backdrop-blur-lg border border-white/20 shadow-xl p-8 sm:p-10 rounded-2xl max-w-md w-full">
+        <h1 className="text-3xl font-extrabold text-center text-primary mb-6">
           Create Account
         </h1>
 
-        {/* Form */}
         <form onSubmit={handleSubmit} className="space-y-5 text-primary">
-          {/* Name */}
           <input
-            id="name"
-            type="text"
             name="name"
             placeholder="Full Name"
+            value={formData.name}
             onChange={handleChange}
             required
             className="w-full px-4 py-3 rounded-lg bg-white text-neutralDark placeholder-primary/60 focus:ring-2 focus:ring-accent focus:outline-none transition"
           />
-
-          {/* Email */}
           <input
-            id="email"
-            type="email"
             name="email"
+            type="email"
             placeholder="Email Address"
+            value={formData.email}
             onChange={handleChange}
             required
             className="w-full px-4 py-3 rounded-lg bg-white text-neutralDark placeholder-primary/60 focus:ring-2 focus:ring-accent focus:outline-none transition"
           />
-
-          {/* Password */}
           <input
-            id="password"
-            type="password"
             name="password"
+            type="password"
             placeholder="Create Password"
+            value={formData.password}
             onChange={handleChange}
             required
             className="w-full px-4 py-3 rounded-lg bg-white text-neutralDark placeholder-primary/60 focus:ring-2 focus:ring-accent focus:outline-none transition"
           />
 
-          {/* Error Message */}
-          {error && (
-            <p className="text-red-500 text-sm mt-1 text-center">{error}</p>
-          )}
+          {error && <p className="text-red-500 text-sm mt-1 text-center">{error}</p>}
 
-          {/* Submit */}
           <button
             type="submit"
             disabled={loading}
@@ -125,19 +99,20 @@ export default function Register() {
           </button>
         </form>
 
-        {/* Footer */}
         <p className="text-center text-sm text-primary/80 mt-4">
           Already have an account?{" "}
           <Link className="text-accent hover:underline font-medium" to="/login">
             Log in
-          </Link>
-        or{" "}
-          <Link
-            className="text-accent hover:underline font-medium"
-            to={`/verify-email?email=${encodeURIComponent(formData.email)}`}
-          >
-            Verify email
-          </Link>
+          </Link>{" "}
+          or{" "}
+          {storedEmail && (
+            <Link
+              className="text-accent hover:underline font-medium"
+              to={`/verify-email?email=${encodeURIComponent(storedEmail)}`}
+            >
+              Verify email
+            </Link>
+          )}
         </p>
       </div>
     </section>
