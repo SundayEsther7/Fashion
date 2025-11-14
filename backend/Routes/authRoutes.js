@@ -109,6 +109,39 @@ router.post("/verify-code", async (req, res) => {
   }
 });
 
+// ------------------- RESEND VERIFICATION CODE -------------------
+router.post("/resend-code", async (req, res) => {
+  try {
+    const { email } = req.body;
+    if (!email) return res.status(400).json({ message: "Email is required" });
+
+    const user = await User.findOne({ email });
+    if (!user) return res.status(404).json({ message: "User not found" });
+
+    if (user.isVerified) return res.status(400).json({ message: "User already verified" });
+
+    // Generate new code
+    const newCode = generateVerificationCode();
+    user.verificationCode = newCode;
+    user.verificationCodeExpiry = Date.now() + 60 * 60 * 1000; // 1 hour
+    await user.save();
+
+    // Send email
+    const verificationLink = `${process.env.CLIENT_URL}/verify-email?email=${encodeURIComponent(email)}`;
+    await sendEmail(
+      email,
+      "Your new verification code",
+      `<p>Your new code is: <strong>${newCode}</strong></p>
+       <p>Or click <a href="${verificationLink}">here</a> to verify.</p>`
+    );
+
+    return res.json({ message: "New verification code sent" });
+  } catch (err) {
+    console.error("Resend code error:", err);
+    return res.status(500).json({ message: "Server error" });
+  }
+});
+
 // ------------------- LOGIN -------------------
 router.post("/login", async (req, res) => {
   try {

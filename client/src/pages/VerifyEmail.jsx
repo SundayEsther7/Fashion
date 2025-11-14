@@ -46,7 +46,7 @@ export default function VerifyEmail() {
 
   try {
     const res = await fetch(
-      `${API}/api/auth/verify-email`, // ✅ correct endpoint
+      `${API}/api/auth/verify-code`, 
       {
         method: "POST",
         headers: { "Content-Type": "application/json" },
