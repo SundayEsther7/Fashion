@@ -1,29 +1,29 @@
 # UrbanGlide #
 Live Demo
 
-https://urbanglide.render.app 
+[https://urbanglide.render.app ](https://urbanglide-ij8e.onrender.com)
 
 ## Project Overview ##
 
-UrbanGlide is a responsive, full-stack e-commerce platform for the skating community.
-It blends street culture and modern web design, allowing users to explore, purchase, and connect around skating gear.
-The app includes full authentication (signup, login, email verification), smooth UI transitions, and optimized performance for all devices.
+UrbanGlide is a responsive, full-stack e-commerce platform for the skating community. It blends street culture with modern web design, allowing users to explore, purchase, and connect around skating gear. The app includes full authentication (signup, login, email verification), smooth UI transitions, and optimized performance across all devices.
 
 ## Brand Identity ##
  ### Color System ###
-Purpose	Color	Hex	Rationale
-Primary (Background/UI Base)	Dark Teal	#013A38	Represents balance, control, and flow—core themes of skating.
-Secondary (Buttons, Highlights)	Navy Blue	#011F3A	Provides contrast and adds depth to CTAs.
-Accent	Vibrant Green	#286F6C	Adds energy and visual rhythm—echoes the active skating lifestyle.
-Neutral Dark	Slate Gray	#23262F	Used for text and secondary details for readability.
-White	#FFFFFF	Maintains contrast and visual clarity.	
-#### Typography ####
 
-Font Family: Saira
+| Purpose                     | Color          | Hex       | Rationale |
+|-----------------------------|----------------|-----------|-----------|
+| Primary (Background/UI Base) | Dark Teal      | #013A38   | Represents balance, control, and flow—core themes of skating. |
+| Secondary (Buttons, Highlights) | Navy Blue   | #011F3A   | Provides contrast and adds depth to CTAs. |
+| Accent                       | Vibrant Green  | #286F6C   | Adds energy and visual rhythm—echoes the active skating lifestyle. |
+| Neutral Dark                 | Slate Gray     | #23262F   | Used for text and secondary details for readability. |
+| Neutral Light                | White          | #FFFFFF   | Maintains contrast and visual clarity. |
 
-Headings: Bold weights (700–900) — clean and impactful for energy and motion.
+### Typography
 
-Body: Regular to Medium (400–500) — simple, modern readability across devices.
+| Usage       | Font      | Weight        | Rationale |
+|------------|-----------|---------------|-----------|
+| Headings   | Saira     | 700–900       | Clean, bold, and impactful to reflect energy and motion of skating lifestyle |
+| Body Text  | Saira     | 400–500       | Simple and modern for readability across devices |
 
 ### Design Decisions ###
 #### Layout Adherence ####
@@ -99,54 +99,98 @@ State management centralized via Zustand.
 
 ## Image Credits ##
 
-All images sourced from Pexels, wikimedia commons and Unsplash for non-commercial use.
-
 Skateboarding imagery by Pexels
 
 Urban and community scenes by Wikimedia Commons
 
+All images sourced for non-commercial use
 
-## Technologies Used ##
+## Installation & Setup
 
-React 18+
+1. **Clone the repository**
+git clone https://github.com/sundyesther7/urbanglide.git
+2. **Install backend dependencies**
+cd backend
+npm install
+3 **Install frontend dependencies**
+cd ../client
+npm install
+4. **Set up environment variables**
+Create a .env file in the backend folder:
+MONGO_URI=<your_mongo_db_uri>
+JWT_SECRET=<your_jwt_secret>
+BREVO_API_KEY=<your_brevo_api_key>
+5. **Run the backend**
+npm run dev
+6. **Run the frontend**
+cd ../client
+npm run dev
 
-Vite
+---
 
-Tailwind CSS 3+
+## 3.Deployment Notes
 
-Framer Motion
 
-Zustand (state management)
+## Deployment
 
-Express.js + Node.js
+- **Hosting:** Render (backend + frontend)
+- **Environment Variables:** Set in Render dashboard for backend.
+- **Frontend Build:** `npm run build` (Vite)
+- **Backend Start Command:** `npm run start` or `npm run dev` in Render
+- **SSL:** Active by default in Render
 
-MongoDB + Mongoose
+### Technologies Used
 
-JWT Authentication
+**Frontend:**  
+- React 19.2+ (Functional components with hooks)  
+- Vite 7+ (Build tool & dev server)  
+- Tailwind CSS 3+ (Utility-first styling)  
+- Framer Motion 12+ (Animations and UI transitions)  
+- Zustand 5+ (State management)  
+- Axios 1+ (HTTP requests)  
+- React Router DOM 7+ (Routing)  
+- React Hot Toast 2+ (Notifications)  
+- React Icons 5+ (Iconography)  
+- @fontsource/saira 5+ (Custom font)  
 
-Nodemailer (email verification)
+**Backend:**  
+- Node.js + Express.js 5+ (Server & API)  
+- MongoDB + Mongoose 8+ (Database & ODM)  
+- JWT Authentication 9+ (Secure user sessions)  
+- Axios 1+ (HTTP requests)  
+- Bcryptjs 3+ (Password hashing)  
+- Cors 2+ (Cross-origin resource sharing)  
+- Dotenv 17+ (Environment variables)  
+- Crypto 1+ (Token/code generation)  
+- Path 0+ (Filesystem path utilities)  
 
-Vercel / Render (deployment)
+
+**Deployment & Tools:**  
+- Render (Hosting and deployment)  
+- WebP / Compressed JPEG images (Optimized media)  
+- Git & GitHub (Version control)  
+- Brevo / Sendinblue (Email verification & notifications)  
 
 ## Challenges & Solutions ##
 
-Email Verification Flow
 
-Challenge: Implementing a secure verification system.
+### 1.Email Verification Flow ###
 
-Solution: Generated 6-digit codes with expiry using Node.js + crypto and delivered via Nodemailer.
+*Challenge: Implementing a secure verification system
 
-Responsive Layout Scaling
+* Solution: Generated 6-digit codes with expiry using Node.js + crypto and delivered via Nodemailer
 
-Challenge: Maintaining consistent typography and spacing across SM, MD, and LG.
+### 2.Responsive Layout Scaling ###
 
-Solution: Used Tailwind’s custom breakpoints and container max-width for uniform visual rhythm.
+* Challenge: Maintaining consistent typography and spacing across SM, MD, LG breakpoints
 
-Performance Optimization
+* Solution: Used Tailwind’s custom breakpoints and container max-widths for uniform visual rhythm
 
-Challenge: Slow image loads reducing Lighthouse scores.
+### 3.Performance Optimization ###
 
-Solution: Converted large images to WebP and implemented lazy loading.
+* Challenge: Slow image loads reducing Lighthouse scores
+
+* Solution: Converted large images to WebP and implemented lazy loading
 
 ## Future Improvements ##
 
