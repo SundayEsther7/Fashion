@@ -4,7 +4,11 @@ import toast, { Toaster } from "react-hot-toast";
 
 export default function Register() {
   const navigate = useNavigate();
-  const [formData, setFormData] = useState({ name: "", email: "", password: "" });
+  const [formData, setFormData] = useState({
+    name: "",
+    email: "",
+    password: "",
+  });
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
   const API = import.meta.env.VITE_API_URL;
@@ -35,7 +39,11 @@ export default function Register() {
         );
 
         toast.success("Account created! Check your email to verify.");
-        navigate(`/verify-email?email=${encodeURIComponent(data.user.email || formData.email)}`);
+        navigate(
+          `/verify-email?email=${encodeURIComponent(
+            data.user.email || formData.email
+          )}`
+        );
       } else {
         setError(data.message || "Something went wrong. Try again.");
       }
@@ -49,7 +57,7 @@ export default function Register() {
   };
 
   // Get email from localStorage for footer link
-  const storedEmail = JSON.parse(localStorage.getItem("verifyEmail")) || "";
+  const storedEmail = localStorage.getItem("verifyEmail") || "";
 
   return (
     <section className="min-h-[100vh] flex items-center justify-center bg-neutralLight px-4">
@@ -88,7 +96,9 @@ export default function Register() {
             className="w-full px-4 py-3 rounded-lg bg-white text-neutralDark placeholder-primary/60 focus:ring-2 focus:ring-accent focus:outline-none transition"
           />
 
-          {error && <p className="text-red-500 text-sm mt-1 text-center">{error}</p>}
+          {error && (
+            <p className="text-red-500 text-sm mt-1 text-center">{error}</p>
+          )}
 
           <button
             type="submit"
