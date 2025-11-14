@@ -4,48 +4,46 @@ import { useAuthStore } from "../store/auth.js";
 
 export default function Login() {
   const navigate = useNavigate();
-  const loginUser = useAuthStore((state) => state.login);
   const [formData, setFormData] = useState({ email: "", password: "" });
   const [error, setError] = useState("");
-
+  const API = import.meta.env.VITE_API_URL;
   // Handle input change
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
   // Handle form submit
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    setError("");
+  const setAuth = useAuthStore((state) => state.setAuth);
 
-    try {
-      const response = await fetch("http://localhost:5000/api/auth/login", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(formData),
-      });
+const handleSubmit = async (e) => {
+  e.preventDefault();
+  setError("");
 
-      const data = await response.json();
-      console.log(data);
+  try {
+    const res = await fetch(`${API}/auth/login`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(formData),
+    });
 
-      if (response.ok) {
-        if (!data.user.isVerified) {
-          // User exists but email not verified yet
-          loginUser(data.user, data.token);
+    const data = await res.json();
 
-          return navigate(`/verify-email?email=${data.user.email}`);
-        }
-
-        // User is verified → normal login
-        useAuthStore.getState().login(data.user, data.token);
-        navigate("/dashboard");
-      } else {
-        toast.error(data.message);
-      }
-    } catch {
-      setError("Network error. Please try again.");
+    if (!res.ok) {
+      setError(data.message || "Login failed");
+      return;
     }
-  };
+
+    setAuth(data.user, data.token);
+
+    if (!data.user.isVerified) {
+      navigate(`/verify-email?email=${data.user.email}`);
+    } else {
+      navigate("/dashboard");
+    }
+  } catch {
+    setError("Network error. Please try again.");
+  }
+};
 
   return (
     <section

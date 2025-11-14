@@ -7,7 +7,8 @@ export default function VerifyEmail() {
   const navigate = useNavigate();
   const location = useLocation();
   const user = useAuthStore((s) => s.user);
-  const login = useAuthStore((s) => s.login);
+  const setAuth = useAuthStore((s) => s.setAuth);
+  const API = import.meta.env.VITE_API_URL;
 
   // Extract email from URL or localStorage
   const params = new URLSearchParams(location.search);
@@ -16,26 +17,26 @@ export default function VerifyEmail() {
 
   const [email, setEmail] = useState(userEmail);
   const [code, setCode] = useState("");
-  const [status, setStatus] = useState(null);
-  const [message, setMessage] = useState("");
   const [coolDown, setCoolDown] = useState(0);
   const [canResend, setCanResend] = useState(true);
 
-  // Countdown effect
+  // Countdown effect for resend button
   useEffect(() => {
     let timer;
     if (coolDown > 0) {
       timer = setTimeout(() => setCoolDown(coolDown - 1), 1000);
+      setCanResend(false);
     } else {
       setCanResend(true);
     }
     return () => clearTimeout(timer);
   }, [coolDown]);
 
+  // Show warning if email is missing
   useEffect(() => {
     if (!email) {
-      setMessage(
-        "Your verification link is missing or expired. Please click the link we sent to your email."
+      toast.error(
+        "Verification link is missing or expired. Please check your email."
       );
     }
   }, [email]);
@@ -44,31 +45,34 @@ export default function VerifyEmail() {
     e.preventDefault();
 
     try {
-      const res = await fetch("http://localhost:5000/api/auth/verify-code", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ email, code }),
-      });
+      const res = await fetch(
+        `${API}/auth/login`,
+        {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ email, code }),
+        }
+      );
 
       const data = await res.json();
 
-      if (res.ok) {
-        toast.success("Your account has been verified!");
-
-        // Update Zustand
-        const updatedUser = { ...user, isVerified: true };
-        const token = localStorage.getItem("token");
-
-        login(updatedUser, token);
-        localStorage.setItem("user", JSON.stringify(updatedUser));
-
-        // Redirect to dashboard
-        setTimeout(() => navigate("/dashboard"), 1200);
-      } else {
+      if (!res.ok) {
         toast.error(data.message || "Invalid code. Try again.");
+        return;
       }
+
+      // Success
+      toast.success(data.message || "Account verified successfully!");
+
+      // Update Zustand store
+      const updatedUser = { ...user, isVerified: true };
+      const token = localStorage.getItem("token") || null;
+      setAuth(updatedUser, token);
+
+      // Redirect to login after short delay
+      setTimeout(() => navigate("/login"), 1500);
     } catch (err) {
-      toast.error("Server error. Try again later.");
+      toast.error(err.message || "Server error. Try again later.");
     }
   };
 
@@ -76,22 +80,26 @@ export default function VerifyEmail() {
     if (!canResend) return;
 
     try {
-      const res = await fetch("http://localhost:5000/api/auth/resend-code", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ email }),
-      });
+      const res = await fetch(
+        "http://localhost:5000/api/auth/resend-code",
+        {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ email }),
+        }
+      );
 
       const data = await res.json();
-      if (res.ok) {
-        toast.success("New code sent! Check your email.");
-        setCanResend(false);
-        setCoolDown(60);
-      } else {
+
+      if (!res.ok) {
         toast.error(data.message || "Unable to resend code.");
+        return;
       }
+
+      toast.success(data.message || "New code sent! Check your email.");
+      setCoolDown(60); // 60 seconds cooldown
     } catch (err) {
-      toast.error("Error sending new code.");
+      toast.error("Error sending new code. Try again later.");
     }
   };
 
