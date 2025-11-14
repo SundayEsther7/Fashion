@@ -42,39 +42,37 @@ export default function VerifyEmail() {
   }, [email]);
 
   const handleVerify = async (e) => {
-    e.preventDefault();
+  e.preventDefault();
 
-    try {
-      const res = await fetch(
-        `${API}/api/auth/login`,
-        {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ email, code }),
-        }
-      );
-
-      const data = await res.json();
-
-      if (!res.ok) {
-        toast.error(data.message || "Invalid code. Try again.");
-        return;
+  try {
+    const res = await fetch(
+      `${API}/api/auth/verify-email`, // ✅ correct endpoint
+      {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ email, code }),
       }
+    );
 
-      // Success
-      toast.success(data.message || "Account verified successfully!");
+    const data = await res.json();
 
-      // Update Zustand store
-      const updatedUser = { ...user, isVerified: true };
-      const token = localStorage.getItem("token") || null;
-      setAuth(updatedUser, token);
-
-      // Redirect to login after short delay
-      setTimeout(() => navigate("/login"), 1500);
-    } catch (err) {
-      toast.error(err.message || "Server error. Try again later.");
+    if (!res.ok) {
+      toast.error(data.message || "Invalid code. Try again.");
+      return;
     }
-  };
+
+    toast.success(data.message || "Account verified successfully!");
+
+    // Update store and redirect
+    const updatedUser = { ...user, isVerified: true };
+    const token = localStorage.getItem("token") || null;
+    setAuth(updatedUser, token);
+
+    setTimeout(() => navigate("/login"), 1500);
+  } catch (err) {
+    toast.error(err.message || "Server error. Try again later.");
+  }
+};
 
   const handleResend = async () => {
     if (!canResend) return;

@@ -37,30 +37,37 @@ router.post("/register", async (req, res) => {
     });
 
     // Send verification email
-    const verificationLink = `${process.env.CLIENT_URL}/verify-email?email=${encodeURIComponent(email)}`;
+    const verificationLink = `${
+      process.env.CLIENT_URL
+    }/verify-email?email=${encodeURIComponent(email)}`;
     try {
       await sendEmail(
         email,
         "Verify your UrbanGlide account",
         `
-          <h1>Welcome, ${name}!</h1>
-          <p>Your 6-digit verification code is:</p>
-          <h2 style="color:#70E000; letter-spacing:3px;">${verificationCode}</h2>
-          <p>Or click below to verify directly:</p>
-          <a href="${verificationLink}" 
-             style="background:#70E000; color:#fff; padding:10px 20px; border-radius:8px; text-decoration:none;">
-            Verify My Account
-          </a>
-          <p>This code expires in 1 hour.</p>
+        <div style="font-family:Arial,sans-serif; line-height:1.5; color:#333;">
+        <h1>Welcome, ${name}!</h1>
+         <p>Your 6-digit verification code is:</p>
+         <h2 style="color:#70E000; letter-spacing:3px;">${verificationCode}</h2>
+         <p>Or click the button below to verify directly:</p>
+        <a href="${verificationLink}" 
+         style="display:inline-block; background:#70E000; color:#fff; padding:12px 24px; border-radius:8px; text-decoration:none; font-weight:bold;">
+        Verify My Account
+        </a>
+       <p style="margin-top:16px; font-size:0.9rem; color:#555;">This code expires in 1 hour.</p>
+       </div>
         `
       );
     } catch (err) {
       console.error("Email send failed:", err);
-      return res.status(500).json({ message: "Failed to send verification email" });
+      return res
+        .status(500)
+        .json({ message: "Failed to send verification email" });
     }
 
     return res.status(201).json({
-      message: "Account created successfully. Check your email for verification code.",
+      message:
+        "Account created successfully. Check your email for verification code.",
       user: { id: user._id, email: user.email },
     });
   } catch (err) {
@@ -102,36 +109,41 @@ router.post("/verify-code", async (req, res) => {
   }
 });
 
-
 // ------------------- LOGIN -------------------
 router.post("/login", async (req, res) => {
   try {
     const { email, password } = req.body;
     if (!email || !password)
-      return res.status(400).json({ message: "Email and password are required" });
+      return res
+        .status(400)
+        .json({ message: "Email and password are required" });
 
     const user = await User.findOne({ email }).select("+password");
     if (!user) return res.status(400).json({ message: "Invalid credentials" });
 
     if (!user.isVerified)
-      return res.status(400).json({ message: "Please verify your email first" });
+      return res
+        .status(400)
+        .json({ message: "Please verify your email first" });
 
     const isMatch = await bcrypt.compare(password, user.password);
-    if (!isMatch) return res.status(400).json({ message: "Invalid credentials" });
+    if (!isMatch)
+      return res.status(400).json({ message: "Invalid credentials" });
 
-    const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET_KEY, { expiresIn: "7d" });
+    const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET_KEY, {
+      expiresIn: "7d",
+    });
 
     return res.json({
-  message: "Login successful",
-  token,
-  user: { 
-    _id: user._id,
-    name: user.name,
-    email: user.email,
-    isVerified: user.isVerified
-  },
-});
-
+      message: "Login successful",
+      token,
+      user: {
+        _id: user._id,
+        name: user.name,
+        email: user.email,
+        isVerified: user.isVerified,
+      },
+    });
   } catch (err) {
     console.error("Login error:", err);
     return res.status(500).json({ message: "Server error" });

@@ -18,40 +18,42 @@ export default function Register() {
   };
 
   const handleSubmit = async (e) => {
-  e.preventDefault();
-  setError("");
+    e.preventDefault();
+    setError("");
 
-  try {
-   const response = await fetch(`${API}/api/auth/register`, {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(formData),
-    });
-
-    // Try safely parsing JSON
-    let data = {};
     try {
-      data = await response.json();
-    } catch {
-      throw new Error("Invalid JSON from server");
+      const response = await fetch(`${API}/api/auth/register`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(formData),
+      });
+
+      // Try safely parsing JSON
+      let data = {};
+      try {
+        data = await response.json();
+      } catch {
+        throw new Error("Invalid JSON from server");
+      }
+
+      if (response.ok) {
+        // Store user (unverified) in localStorage for redirect protection
+        localStorage.setItem(
+          "user",
+          JSON.stringify({ email: formData.email, isVerified: false })
+        );
+
+        // You can navigate directly to verification
+        navigate(`/verify-email?email=${encodeURIComponent(formData.email)}`);
+      } else {
+        setError(data.message || "Something went wrong. Try again.");
+      }
+    } catch (err) {
+      console.error("Register error:", err);
+      setError("Network error. Please check your connection.");
+      toast.error("Network error. Please check your connection.");
     }
-
- if (response.ok) {
-  // Store user (unverified) in localStorage for redirect protection
-  localStorage.setItem("user", JSON.stringify({ email: formData.email, isVerified: false }));
-  
-  // You can navigate directly to verification
-  navigate(`/verify-email?email=${encodeURIComponent(formData.email)}`);
-} else {
-  setError(data.message || "Something went wrong. Try again.");
-}
-  } catch (err) {
-    console.error("Register error:", err);
-    setError("Network error. Please check your connection.");
-    toast.error("Network error. Please check your connection.");
-  }
-};
-
+  };
 
   return (
     <section
@@ -128,6 +130,13 @@ export default function Register() {
           Already have an account?{" "}
           <Link className="text-accent hover:underline font-medium" to="/login">
             Log in
+          </Link>
+        or{" "}
+          <Link
+            className="text-accent hover:underline font-medium"
+            to={`/verify-email?email=${encodeURIComponent(formData.email)}`}
+          >
+            Verify email
           </Link>
         </p>
       </div>
