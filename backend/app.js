@@ -10,7 +10,8 @@ dotenv.config();
 const app = express();
 
 app.use(cors({
-  origin: "https://urbanglide-ij8e.onrender.com",  // your frontend URL
+  origin: ["http://localhost:5173",
+  "https://urbanglide-ij8e.onrender.com"],  // your frontend URL
   methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
   credentials: true, // if you plan to send cookies or auth headers
 }));
