@@ -80,8 +80,8 @@ export default function VerifyEmail() {
     if (!canResend) return;
 
     try {
-      const res = await fetch(
-        "http://localhost:5000/api/auth/resend-code",
+      const res = await fetch( 
+        `${API}/api/auth/resend-code`,
         {
           method: "POST",
           headers: { "Content-Type": "application/json" },
