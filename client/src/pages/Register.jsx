@@ -4,11 +4,7 @@ import toast, { Toaster } from "react-hot-toast";
 
 export default function Register() {
   const navigate = useNavigate();
-  const [formData, setFormData] = useState({
-    name: "",
-    email: "",
-    password: "",
-  });
+  const [formData, setFormData] = useState({ name: "", email: "", password: "" });
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
   const API = import.meta.env.VITE_API_URL;
@@ -32,18 +28,12 @@ export default function Register() {
       const data = await res.json();
 
       if (res.ok) {
-        // Store email in localStorage to use for verification
-        localStorage.setItem(
-          "verifyEmail",
-          JSON.stringify(data.user.email || formData.email)
-        );
+        // Store email in localStorage as a plain string
+        const emailToStore = data.user?.email || formData.email;
+        localStorage.setItem("verifyEmail", emailToStore);
 
         toast.success("Account created! Check your email to verify.");
-        navigate(
-          `/verify-email?email=${encodeURIComponent(
-            data.user.email || formData.email
-          )}`
-        );
+        navigate(`/verify-email?email=${encodeURIComponent(emailToStore)}`);
       } else {
         setError(data.message || "Something went wrong. Try again.");
       }
@@ -96,9 +86,7 @@ export default function Register() {
             className="w-full px-4 py-3 rounded-lg bg-white text-neutralDark placeholder-primary/60 focus:ring-2 focus:ring-accent focus:outline-none transition"
           />
 
-          {error && (
-            <p className="text-red-500 text-sm mt-1 text-center">{error}</p>
-          )}
+          {error && <p className="text-red-500 text-sm mt-1 text-center">{error}</p>}
 
           <button
             type="submit"
