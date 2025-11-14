@@ -46,7 +46,7 @@ export default function VerifyEmail() {
 
     try {
       const res = await fetch(
-        `${API}/auth/login`,
+        `${API}/api/auth/login`,
         {
           method: "POST",
           headers: { "Content-Type": "application/json" },
