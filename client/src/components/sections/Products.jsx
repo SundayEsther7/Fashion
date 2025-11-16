@@ -38,14 +38,13 @@ import new9 from "../../assets/new9.jpg";
 export default function AllProducts() {
   //  Product data
   const products = [
-   
- {
+    {
       name: "Adult Inline Skates",
       image: new9,
       price: "KES8000.00",
       oldPrice: "KES10000.00",
     },
-    
+
     {
       name: "Adult Skates - Blue/Red",
       image: skate2,
@@ -199,7 +198,7 @@ export default function AllProducts() {
     {
       name: "Kids Pads",
       image: kidspads,
-     price: "KES2500.00",
+      price: "KES2500.00",
       oldPrice: "KES3000.00",
     },
     {
@@ -239,21 +238,20 @@ export default function AllProducts() {
   const itemsPerPage = 8; // products per page
 
   //2. calculate visible products
-  const start = (currentPage - 1) * itemsPerPage; 
-  const end = start + itemsPerPage; 
-  const visibleProducts = products.slice(start, end); 
+  const start = (currentPage - 1) * itemsPerPage;
+  const end = start + itemsPerPage;
+  const visibleProducts = products.slice(start, end);
 
-  
   return (
     <SectionWrapper className="relative py-1 m-1">
       {/* Header */}
-      <div className="hover:scale-105 transition-transform duration-300 p-2 shadow-sm relative rounded-[16px] border-[rgba(16,38,55,0.1)] text-center border w-full max-w-[600px] mx-auto mb-12">
+      <div className="  p-2 shadow-sm relative rounded-[16px]  text-center w-full max-w-[600px] mx-auto mb-12">
         <h2 className="text-[40px] font-semibold text-[#23262F]">
           Street-Ready Gear
         </h2>
         <p className="text-[16px] text-[#23262F] opacity-80 mt-3 leading-relaxed">
-          Explore gear made to move — designed for performance, comfort, and style
-          that stands out wherever you ride.
+          Explore gear made to move — designed for performance, comfort, and
+          style that stands out wherever you ride.
         </p>
       </div>
 
