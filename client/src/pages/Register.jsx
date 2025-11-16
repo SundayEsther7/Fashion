@@ -38,7 +38,6 @@ export default function Register() {
         setError(data.message || "Something went wrong. Try again.");
       }
     } catch (err) {
-      console.error("Register error:", err);
       setError("Network error. Please check your connection.");
       toast.error("Network error. Please check your connection.");
     } finally {

@@ -13,7 +13,7 @@ function generateVerificationCode() {
   return Math.floor(100000 + Math.random() * 900000).toString();
 }
 
-// ------------------- REGISTER -------------------
+// ------------------- REGISTER -------------------//
 router.post("/register", async (req, res) => {
   try {
     const { name, email, password } = req.body;
@@ -36,7 +36,7 @@ router.post("/register", async (req, res) => {
       verificationCodeExpiry: Date.now() + 60 * 60 * 1000, // 1 hour
     });
 
-    // Send verification email
+    // ------------Send verification email--------------//
     const verificationLink = `${
       process.env.CLIENT_URL
     }/verify-email?email=${encodeURIComponent(email)}`;
@@ -59,7 +59,6 @@ router.post("/register", async (req, res) => {
         `
       );
     } catch (err) {
-      console.error("Email send failed:", err);
       return res
         .status(500)
         .json({ message: "Failed to send verification email" });
@@ -71,12 +70,11 @@ router.post("/register", async (req, res) => {
       user: { id: user._id, email: user.email },
     });
   } catch (err) {
-    console.error("Register error:", err);
     return res.status(500).json({ message: "Server error" });
   }
 });
 
-// ------------------- VERIFY CODE -------------------
+// ------------------- VERIFY CODE -------------------//
 router.post("/verify-code", async (req, res) => {
   try {
     const { email, code } = req.body;
@@ -104,12 +102,11 @@ router.post("/verify-code", async (req, res) => {
 
     return res.json({ message: "Email verified successfully" });
   } catch (err) {
-    console.error("Verify code error:", err);
     return res.status(500).json({ message: "Server error" });
   }
 });
 
-// ------------------- RESEND VERIFICATION CODE -------------------
+// ------------------- RESEND VERIFICATION CODE -------------------///
 router.post("/resend-code", async (req, res) => {
   try {
     const { email } = req.body;
@@ -131,13 +128,19 @@ router.post("/resend-code", async (req, res) => {
     await sendEmail(
       email,
       "Your new verification code",
-      `<p>Your new code is: <strong>${newCode}</strong></p>
-       <p>Or click <a href="${verificationLink}">here</a> to verify.</p>`
+      `<div style="font-family:Arial,sans-serif; line-height:1.5; color:#333;">
+         <h2 style="color:#70E000; letter-spacing:3px;">${verificationCode}</h2>
+         <p>Or click the button below to verify directly:</p>
+        <a href="${verificationLink}" 
+         style="display:inline-block; background:#70E000; color:#fff; padding:12px 24px; border-radius:8px; text-decoration:none; font-weight:bold;">
+        Verify My Account
+        </a>
+       <p style="margin-top:16px; font-size:0.9rem; color:#555;">This code expires in 1 hour.</p>
+       </div>`
     );
 
     return res.json({ message: "New verification code sent" });
   } catch (err) {
-    console.error("Resend code error:", err);
     return res.status(500).json({ message: "Server error" });
   }
 });
@@ -178,7 +181,6 @@ router.post("/login", async (req, res) => {
       },
     });
   } catch (err) {
-    console.error("Login error:", err);
     return res.status(500).json({ message: "Server error" });
   }
 });

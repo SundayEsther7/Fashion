@@ -1,5 +1,14 @@
 import { useAuthStore } from "../store/auth";
 
+// Custom error class for unauthorized errors
+class UnauthorizedError extends Error {
+  constructor(message, url) {
+    super(message);
+    this.name = "UnauthorizedError";
+    this.url = url;
+  }
+}
+
 //  Custom fetch wrapper that automatically adds the JWT token
 export const apiFetch = async (url, options = {}) => {
   const { token } = useAuthStore.getState(); // Access Zustand store outside React
@@ -15,7 +24,7 @@ export const apiFetch = async (url, options = {}) => {
   if (!response.ok) {
     // Handle unauthorized or expired token
     if (response.status === 401) {
-      console.warn("Unauthorized request — possibly expired token");
+      throw new UnauthorizedError("Unauthorized access", url);
     }
     throw new Error(`HTTP error! Status: ${response.status}`);
   }

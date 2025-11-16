@@ -48,7 +48,6 @@ export default function Login() {
       toast.success("Login successful!");
       navigate("/dashboard");
     } catch (err) {
-      console.error("Login error:", err);
       setError("Network error. Please try again.");
       toast.error("Network error. Please try again.");
     } finally {

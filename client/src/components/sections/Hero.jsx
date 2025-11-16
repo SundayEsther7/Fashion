@@ -5,10 +5,10 @@ import { Link } from "react-router-dom";
 
 export default function Hero() {
   return (
-    <SectionWrapper className="m-1 py-1 mt-0 pt-0">
+    <SectionWrapper className="pt-0 mt-0 mb-1 pb-1">
       <section
         aria-label="Hero section showcasing UrbanGlide skater background"
-        className="relative min-h-[90vh] md:h-[100vh] max-h-[1000px] flex flex-col items-center justify-center text-center bg-cover bg-center pb-[120px] md:pb-[140px]"
+        className="relative min-h-[90vh] md:h-[100vh] overflow-hidden max-h-[1000px] flex flex-col items-center justify-center text-center bg-cover bg-center pb-[120px] md:pb-[140px]"
         style={{ backgroundImage: `url(${skaters7})` }}
       >
         {/* Dark overlay */}

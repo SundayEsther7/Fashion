@@ -8,7 +8,9 @@
 body {
   font-family: 'Saira', sans-serif;
 }
-
+html, body {
+  overflow-x: hidden;
+}
 
 @keyframes marquee {
   0% {
