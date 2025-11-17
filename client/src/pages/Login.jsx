@@ -83,8 +83,15 @@ export default function Login() {
             required
             className="w-full px-4 py-3 rounded-lg bg-white text-neutralDark placeholder-primary/60 focus:ring-2 focus:ring-accent focus:outline-none transition"
           />
+          
 
-          {error && <p className="text-red-500 text-sm mt-1 text-center">{error}</p>}
+          {error && (
+            <p className="text-red-500 text-sm mt-1 text-center">{error}</p>
+          )}
+
+          {error && (
+            <p className="text-red-500 text-sm mt-1 text-center">{error}</p>
+          )}
 
           <button
             type="submit"
@@ -97,10 +104,21 @@ export default function Login() {
 
         <p className="text-center text-sm text-primary/80 mt-4">
           Don’t have an account?{" "}
-          <Link className="text-accent hover:underline font-medium" to="/register">
+          <Link
+            className="text-accent hover:underline font-medium"
+            to="/register"
+          >
             Register
           </Link>
         </p>
+        <div className="text-right mt-1">
+            <Link
+              to="/forgot-password"
+              className="text-sm text-accent hover:underline font-medium"
+            >
+              Forgot Password?
+            </Link>
+          </div>
       </div>
     </section>
   );
