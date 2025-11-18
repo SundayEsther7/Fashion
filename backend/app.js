@@ -18,7 +18,7 @@ app.use(cors({
 
 app.use(express.json());
 
-// Health route **must be before any catch-all static middleware**
+// Health route
 app.get("/api/health", (req, res) => {
   res.json({ status: "ok" });
 });

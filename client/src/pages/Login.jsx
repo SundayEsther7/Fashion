@@ -111,7 +111,7 @@ export default function Login() {
             Register
           </Link>
         </p>
-        <div className="text-right mt-1">
+        <div className="text-center mt-2">
             <Link
               to="/forgot-password"
               className="text-sm text-accent hover:underline font-medium"
