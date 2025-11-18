@@ -7,5 +7,8 @@ export default defineConfig({
   plugins: [react()],
   server: {
     port: 5173,
+    // This ensures all routes fallback to index.html
+    historyApiFallback: true,
+  
   },
 })

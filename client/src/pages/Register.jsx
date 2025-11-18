@@ -32,7 +32,7 @@ export default function Register() {
         const emailToStore = data.user?.email || formData.email;
         localStorage.setItem("verifyEmail", emailToStore);
 
-        toast.success("Account created! Check your email to verify.");
+        toast.success("Account created! Check your email to verify.", { duration: 4000 });
         navigate(`/verify-email?email=${encodeURIComponent(emailToStore)}`);
       } else {
         setError(data.message || "Something went wrong. Try again.");

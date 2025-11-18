@@ -1,26 +1,27 @@
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 
 // Layout
-import Header from "./components/layout/Header";
-import Footer from "./components/layout/Footer";
+import Header from "./components/layout/Header.jsx";
+import Footer from "./components/layout/Footer.jsx";
 
 // Pages
-import Home from "./pages/Home";
-import Shop from "./pages/Shop";
-import About from "./pages/About";
-import Contact from "./pages/Contact";
-import Login from "./pages/Login";
-import Register from "./pages/Register";
-import VerifyEmail from "./pages/VerifyEmail";
-import Dashboard from "./pages/Dashboard";
-import Profile from "./pages/Profile";
+import Home from "./pages/Home.jsx";
+import Shop from "./pages/Shop.jsx";
+import About from "./pages/About.jsx";
+import Contact from "./pages/Contact.jsx";
+import Login from "./pages/Login.jsx";
+import ResetPassword from "./pages/ResetPassword.jsx";
+import ForgotPassword from "./pages/ForgotPassword.jsx";
+import Register from "./pages/Register.jsx";
+import VerifyEmail from "./pages/VerifyEmail.jsx";
+import Dashboard from "./pages/Dashboard.jsx";
+import Profile from "./pages/Profile.jsx";
 
 // Route guards
 // import ProtectedRoute from "./auth/ProtectedRoute";
 // import PublicRoute from "./auth/PublicRoute";
 
 export default function App() {
-  
   return (
     <Router>
       <Header />
@@ -31,13 +32,14 @@ export default function App() {
         <Route path="/shop" element={<Shop />} />
         <Route path="/about" element={<About />} />
         <Route path="/contact" element={<Contact />} />
+        
 
         {/* Auth pages */}
         <Route
           path="/login"
           element={
             // <PublicRoute>
-              <Login />
+            <Login />
             // {/* </PublicRoute> */}
           }
         />
@@ -45,7 +47,7 @@ export default function App() {
           path="/register"
           element={
             // <PublicRoute>
-              <Register />
+            <Register />
             // </PublicRoute>
           }
         />
@@ -53,17 +55,18 @@ export default function App() {
           path="/verify-email"
           element={
             // <PublicRoute>
-              <VerifyEmail />
+            <VerifyEmail />
             // </PublicRoute>
           }
         />
-
+        <Route path="/forgot-password" element={<ForgotPassword />} />
+        <Route path="/reset-password" element={<ResetPassword />} />
         {/* Protected pages */}
         <Route
           path="/dashboard"
           element={
             // <ProtectedRoute>
-              <Dashboard />
+            <Dashboard />
             // {/* </ProtectedRoute> */}
           }
         />
@@ -71,13 +74,14 @@ export default function App() {
           path="/profile"
           element={
             // <ProtectedRoute>
-              <Profile />
+            <Profile />
             // </ProtectedRoute>
           }
         />
 
         {/* Optional: catch-all 404 page */}
         {/* <Route path="*" element={<NotFound />} /> */}
+        <Route path="*" element={<h1>404: Page Not Found</h1>} />
       </Routes>
 
       <Footer />
