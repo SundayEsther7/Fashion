@@ -185,6 +185,94 @@ router.post("/login", async (req, res) => {
   }
 });
 
+// Request Password Reset
+router.post("/request-reset", async (req, res) => {
+  try {
+    const { email } = req.body;
+
+    const user = await User.findOne({ email });
+    if (!user) {
+      return res.status(404).json({ message: "User not found" });
+    }
+
+    // Generate 6-digit code
+    const resetCode = Math.floor(100000 + Math.random() * 900000).toString();
+
+    // Save code with expiry (15 minutes)
+    user.resetCode = resetCode;
+    user.resetCodeExpires = Date.now() + 60 * 60 * 1000; 
+    await user.save();
+
+    // Send email
+    // Build Reset Password Email Template
+const resetLink = `${process.env.CLIENT_URL}/reset-password?email=${encodeURIComponent(email)}`;
+
+await sendEmail(
+  email,
+  "Your Password Reset Code",
+  `
+  <div style="font-family:Arial,sans-serif; line-height:1.5; color:#333;">
+    <h2 style="color:#70E000; letter-spacing:3px; text-align:center;">
+      ${resetCode}
+    </h2>
+
+    <p>Use the code above to reset your password. Or click the button below:</p>
+
+    <a href="${resetLink}"
+      style="display:inline-block; background:#70E000; color:#fff; padding:12px 24px; border-radius:8px; text-decoration:none; font-weight:bold;">
+      Reset My Password
+    </a>
+
+    <p style="margin-top:16px; font-size:0.9rem; color:#555;">
+      This code expires in 1 hour.
+    </p>
+  </div>
+  `
+);
+
+
+    res.json({ message: "Reset code sent to email" });
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({ message: "Server error" });
+  }
+});
+ 
+// Reset Password
+router.post("/reset-password", async (req, res) => {
+  try {
+    const { email, code, password } = req.body;
+
+    const user = await User.findOne({ email });
+    if (!user) {
+      return res.status(404).json({ message: "User not found" });
+    }
+
+    if (!user.resetCode || user.resetCode !== code) {
+      return res.status(400).json({ message: "Invalid code" });
+    }
+
+    if (user.resetCodeExpires < Date.now()) {
+      return res.status(400).json({ message: "Code has expired" });
+    }
+
+    // Hash new password
+    const salt = await bcrypt.genSalt(10);
+    const hashed = await bcrypt.hash(password, salt);
+
+    user.password = hashed;
+    user.resetCode = undefined;
+    user.resetCodeExpires = undefined;
+    await user.save();
+
+    res.json({ message: "Password reset successful. You can now log in." });
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({ message: "Server error" });
+  }
+});
+
+
 // ------------------- PROFILE -------------------
 router.get("/profile", protect, async (req, res) => {
   return res.json({
