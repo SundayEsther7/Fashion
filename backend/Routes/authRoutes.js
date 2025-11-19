@@ -33,7 +33,7 @@ router.post("/register", async (req, res) => {
       password: hashedPassword,
       verificationCode,
       isVerified: false,
-      verificationCodeExpiry: Date.now() + 60 * 60 * 1000, // 1 hour
+      verificationCodeExpiry: Date.now() + 24 * 60 * 60 * 1000, // 1 Day
     });
 
     // ------------Send verification email--------------//
@@ -54,7 +54,7 @@ router.post("/register", async (req, res) => {
          style="display:inline-block; background:#70E000; color:#fff; padding:12px 24px; border-radius:8px; text-decoration:none; font-weight:bold;">
         Verify My Account
         </a>
-       <p style="margin-top:16px; font-size:0.9rem; color:#555;">This code expires in 1 hour.</p>
+       <p style="margin-top:16px; font-size:0.9rem; color:#555;">This code expires in 1 day.</p>
        </div>
         `
       );
@@ -115,7 +115,8 @@ router.post("/resend-code", async (req, res) => {
     const user = await User.findOne({ email });
     if (!user) return res.status(404).json({ message: "User not found" });
 
-    if (user.isVerified) return res.status(400).json({ message: "User already verified" });
+    if (user.isVerified)
+      return res.status(400).json({ message: "User already verified" });
 
     // Generate new code
     const newCode = generateVerificationCode();
@@ -124,7 +125,9 @@ router.post("/resend-code", async (req, res) => {
     await user.save();
 
     // Send email
-    const verificationLink = `${process.env.CLIENT_URL}/verify-email?email=${encodeURIComponent(email)}`;
+    const verificationLink = `${
+      process.env.CLIENT_URL
+    }/verify-email?email=${encodeURIComponent(email)}`;
     await sendEmail(
       email,
       "Your new verification code",
@@ -149,23 +152,31 @@ router.post("/resend-code", async (req, res) => {
 router.post("/login", async (req, res) => {
   try {
     const { email, password } = req.body;
+
     if (!email || !password)
-      return res
-        .status(400)
-        .json({ message: "Email and password are required" });
+      return res.status(400).json({ message: "Email and password are required" });
 
     const user = await User.findOne({ email }).select("+password");
-    if (!user) return res.status(400).json({ message: "Invalid credentials" });
+    if (!user)
+      return res.status(400).json({ message: "Invalid credentials" });
 
-    if (!user.isVerified)
-      return res
-        .status(400)
-        .json({ message: "Please verify your email first" });
+    // 24-hour verification lock
+    const verificationDeadline =
+      user.createdAt.getTime() + 24 * 60 * 60 * 1000;
 
+    if (!user.isVerified && Date.now() > verificationDeadline) {
+      return res.status(403).json({
+        blocked: true,
+        message: "You must verify your email before continuing. Your account is locked.",
+      });
+    }
+
+    // Check password
     const isMatch = await bcrypt.compare(password, user.password);
     if (!isMatch)
       return res.status(400).json({ message: "Invalid credentials" });
 
+    // Generate token
     const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET_KEY, {
       expiresIn: "7d",
     });
@@ -179,13 +190,14 @@ router.post("/login", async (req, res) => {
         email: user.email,
         isVerified: user.isVerified,
       },
+      needsVerification: !user.isVerified, // Login allowed, but warn them
     });
   } catch (err) {
     return res.status(500).json({ message: "Server error" });
   }
 });
 
-// Request Password Reset
+// ------------------- PASSWORD RESET -------------------//
 router.post("/request-reset", async (req, res) => {
   try {
     const { email } = req.body;
@@ -200,17 +212,19 @@ router.post("/request-reset", async (req, res) => {
 
     // Save code with expiry (15 minutes)
     user.resetCode = resetCode;
-    user.resetCodeExpires = Date.now() + 60 * 60 * 1000; 
+    user.resetCodeExpires = Date.now() + 60 * 60 * 1000;
     await user.save();
 
     // Send email
     // Build Reset Password Email Template
-const resetLink = `${process.env.CLIENT_URL}/reset-password?email=${encodeURIComponent(email)}`;
+    const resetLink = `${
+      process.env.CLIENT_URL
+    }/reset-password?email=${encodeURIComponent(email)}`;
 
-await sendEmail(
-  email,
-  "Your Password Reset Code",
-  `
+    await sendEmail(
+      email,
+      "Your Password Reset Code",
+      `
   <div style="font-family:Arial,sans-serif; line-height:1.5; color:#333;">
     <h2 style="color:#70E000; letter-spacing:3px; text-align:center;">
       ${resetCode}
@@ -228,8 +242,7 @@ await sendEmail(
     </p>
   </div>
   `
-);
-
+    );
 
     res.json({ message: "Reset code sent to email" });
   } catch (error) {
@@ -237,8 +250,8 @@ await sendEmail(
     res.status(500).json({ message: "Server error" });
   }
 });
- 
-// Reset Password
+
+// ---------------Reset Password---------------------//
 router.post("/reset-password", async (req, res) => {
   try {
     const { email, code, password } = req.body;
@@ -271,7 +284,6 @@ router.post("/reset-password", async (req, res) => {
     res.status(500).json({ message: "Server error" });
   }
 });
-
 
 // ------------------- PROFILE -------------------
 router.get("/profile", protect, async (req, res) => {

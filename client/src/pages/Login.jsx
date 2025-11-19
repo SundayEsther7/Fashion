@@ -29,24 +29,29 @@ export default function Login() {
 
       const data = await res.json();
 
-      if (!res.ok) {
-        // Handle unverified user
-        if (data.message === "Please verify your email first") {
-          localStorage.setItem("verifyEmail", formData.email);
-          toast("Please verify your email before logging in.", { icon: "⚠️" });
-          navigate(`/verify-email?email=${encodeURIComponent(formData.email)}`);
-          return;
-        }
+      // ❌ Account locked after 24 hours
+      if (data.blocked) {
+        toast.error(data.message);
+        return;
+      }
 
+      // ❌ Other login errors
+      if (!res.ok) {
         setError(data.message || "Login failed");
         toast.error(data.message || "Login failed");
         return;
       }
 
-      // Login success
+      // ⚠ User can login but is NOT verified
+      if (data.needsVerification) {
+        toast("Your account is not verified.", { icon: "⚠️" });
+      }
+
+      // ✅ Save auth
       setAuth(data.user, data.token);
       toast.success("Login successful!");
       navigate("/dashboard");
+
     } catch (err) {
       setError("Network error. Please try again.");
       toast.error("Network error. Please try again.");
@@ -83,7 +88,6 @@ export default function Login() {
             required
             className="w-full px-4 py-3 rounded-lg bg-white text-neutralDark placeholder-primary/60 focus:ring-2 focus:ring-accent focus:outline-none transition"
           />
-          
 
           {error && (
             <p className="text-red-500 text-sm mt-1 text-center">{error}</p>
@@ -112,13 +116,13 @@ export default function Login() {
           </Link>
         </p>
         <div className="text-center mt-2">
-            <Link
-              to="/forgot-password"
-              className="text-sm text-accent hover:underline font-medium"
-            >
-              Forgot Password?
-            </Link>
-          </div>
+          <Link
+            to="/forgot-password"
+            className="text-sm text-accent hover:underline font-medium"
+          >
+            Forgot Password?
+          </Link>
+        </div>
       </div>
     </section>
   );

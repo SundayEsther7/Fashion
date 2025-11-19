@@ -13,40 +13,44 @@ export default function Register() {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    setError("");
-    setLoading(true);
+const handleSubmit = async (e) => {
+  e.preventDefault();
+  setError("");
+  setLoading(true);
 
-    try {
-      const res = await fetch(`${API}/api/auth/register`, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(formData),
-      });
+  try {
+    const res = await fetch(`${API}/api/auth/register`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(formData),
+    });
 
-      const data = await res.json();
+    const data = await res.json();
 
-      if (res.ok) {
-        // Store email in localStorage as a plain string
-        const emailToStore = data.user?.email || formData.email;
-        localStorage.setItem("verifyEmail", emailToStore);
+    if (res.ok) {
+      // Store email in localStorage only for later verification reminder
+      const emailToStore = data.user?.email || formData.email;
+      localStorage.setItem("verifyEmail", emailToStore);
 
-        toast.success("Account created! Check your email to verify.", { duration: 4000 });
-        navigate(`/verify-email?email=${encodeURIComponent(emailToStore)}`);
-      } else {
-        setError(data.message || "Something went wrong. Try again.");
-      }
-    } catch (err) {
-      setError("Network error. Please check your connection.");
-      toast.error("Network error. Please check your connection.");
-    } finally {
-      setLoading(false);
+      // Notify user to verify, but do NOT redirect
+      toast.success(
+        "Account created! You can log in now. Please verify your email within 24 hours.",
+        { duration: 4000 }
+      );
+
+      // Optionally, redirect to login instead of verify-email
+      navigate("/login");
+    } else {
+      setError(data.message || "Something went wrong. Try again.");
+      toast.error(data.message || "Something went wrong. Try again.");
     }
-  };
-
-  // Get email from localStorage for footer link
-  const storedEmail = localStorage.getItem("verifyEmail") || "";
+  } catch (err) {
+    setError("Network error. Please check your connection.");
+    toast.error("Network error. Please check your connection.");
+  } finally {
+    setLoading(false);
+  }
+};
 
   return (
     <section className="min-h-[100vh] flex items-center justify-center bg-neutralLight px-4">
@@ -100,16 +104,7 @@ export default function Register() {
           Already have an account?{" "}
           <Link className="text-accent hover:underline font-medium" to="/login">
             Log in
-          </Link>{" "}
-          or{" "}
-          {storedEmail && (
-            <Link
-              className="text-accent hover:underline font-medium"
-              to={`/verify-email?email=${encodeURIComponent(storedEmail)}`}
-            >
-              Verify email
-            </Link>
-          )}
+          </Link>
         </p>
       </div>
     </section>

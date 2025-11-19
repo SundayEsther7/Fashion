@@ -1,5 +1,4 @@
 import mongoose from "mongoose";
-import bcrypt from "bcryptjs";
 
 const userSchema = new mongoose.Schema(
   {
@@ -23,6 +22,10 @@ const userSchema = new mongoose.Schema(
     isVerified: {
       type: Boolean,
       default: false,
+    },
+    createdAt: {
+      type: Date,
+      default: Date.now,
     },
     resetToken: String,
     resetTokenExpiry: Date,
