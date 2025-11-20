@@ -293,4 +293,42 @@ router.get("/profile", protect, async (req, res) => {
   });
 });
 
+// ------------------- TRIGGER VERIFICATION EMAIL ------------------- //
+router.post("/trigger-verify", protect, async (req, res) => {
+  try {
+    const user = await User.findById(req.user._id);
+    if (!user) return res.status(404).json({ message: "User not found" });
+
+    if (user.isVerified)
+      return res.status(400).json({ message: "User already verified" });
+
+    // Generate new verification code
+    const verificationCode = Math.floor(100000 + Math.random() * 900000).toString();
+    user.verificationCode = verificationCode;
+    user.verificationCodeExpiry = Date.now() + 60 * 60 * 1000; // 1 hour
+    await user.save();
+
+    const verificationLink = `${process.env.CLIENT_URL}/verify-email?email=${encodeURIComponent(user.email)}`;
+
+    await sendEmail(
+      user.email,
+      "Verify your UrbanGlide account",
+      `<div style="font-family:Arial,sans-serif; line-height:1.5; color:#333;">
+         <h2 style="color:#70E000; letter-spacing:3px;">${verificationCode}</h2>
+         <p>Or click the button below to verify directly:</p>
+         <a href="${verificationLink}" 
+            style="display:inline-block; background:#70E000; color:#fff; padding:12px 24px; border-radius:8px; text-decoration:none; font-weight:bold;">
+           Verify My Account
+         </a>
+         <p style="margin-top:16px; font-size:0.9rem; color:#555;">This code expires in 1 hour.</p>
+       </div>`
+    );
+
+    res.json({ message: "Verification email sent successfully" });
+  } catch (err) {
+    console.log(err);
+    res.status(500).json({ message: "Server error" });
+  }
+});
+
 export default router;
