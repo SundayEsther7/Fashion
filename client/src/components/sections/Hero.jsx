@@ -2,8 +2,13 @@ import skaters7 from "../../assets/skaters7.jpg";
 import SectionWrapper from "../common/SectionWrapper";
 import { motion } from "framer-motion";
 import { Link } from "react-router-dom";
+import { useAuthStore } from "../../store/auth";
+import { useNavigate } from "react-router-dom";
 
 export default function Hero() {
+  const { user } = useAuthStore();
+  const navigate = useNavigate();
+
   return (
     <SectionWrapper className="pt-0 mt-0 mb-1 pb-1">
       <section
@@ -44,12 +49,16 @@ export default function Hero() {
           </p>
 
           <Link
-            to="/register"
-            aria-label="Get started with UrbanGlide"
-            className="bg-accent text-primary font-bold px-12 py-4 rounded-lg hover:bg-accent/80 transition focus:outline-none focus:ring-4 focus:ring-accent/50"
-          >
-            Get Started
-          </Link>
+      onClick={(e) => {
+        e.preventDefault(); // stop normal <Link> behavior
+        if (user) navigate("/dashboard");
+        else navigate("/register");
+      }}
+      aria-label="Get started with UrbanGlide"
+      className="bg-accent text-primary font-bold px-12 py-4 rounded-lg hover:bg-accent/80 transition focus:outline-none focus:ring-4 focus:ring-accent/50"
+    >
+      Get Started
+    </Link>
         </motion.div>
       </section>
     </SectionWrapper>
